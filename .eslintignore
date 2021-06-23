@@ -1,0 +1,3 @@
+node_modules
+scripts/generate-config
+webpack.config.js

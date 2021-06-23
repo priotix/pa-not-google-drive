@@ -1,0 +1,24 @@
+/node_modules
+
+# production
+/build
+/dist
+/src/config/*.json
+
+# IDE files
+.vscode
+.idea
+
+# Cache
+.eslintcache
+
+# misc
+.DS_Store
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,61 @@
+@import '../../scss/mixins.scss';
+
+.c-Login {
+  height: 100vh;
+}
+
+.c-Login__form {
+  width: 100%;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14) !important;
+  padding: 30px;
+  padding-top: 5px;
+}
+
+.c-Login__formTitle {
+  @include fontMixin(18px, "Roboto", 400, unset, unset, #757575);
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.c-Login__titleText {
+  margin-left: 15px;
+}
+
+.c-Login__logo {
+  padding-top: 7px;
+  background: linear-gradient(-45deg, #25c0dc, #0e8fe4);
+  box-shadow: 0 4px 20px 0 rgb(0 0 0 / 14%), 0 7px 10px -5px hsl(0deg 0% 46% / 50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 3px;
+  margin-top: -20px;
+}
+
+.winLogo {
+  width: 80%;
+  height: auto;
+  margin: 25% 10%;
+  color: white;
+}
+
+.c-Login__buttonsGrid {
+  margin-top: 20px;
+}
+
+.c-Login__chackboxLabel {
+  color: #757575;
+}
+
+.c-Login__loginButton {
+  color: #fff;
+}
+
+.c-Login__registerNow {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px !important;
+  font-weight: bold;
+  color: #757575;
+}

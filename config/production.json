@@ -1,0 +1,7 @@
+{
+  "content": {
+    "globals": {
+      "urlAdminsHost": "https://api-admins.win.gg"
+    }
+  }
+}
