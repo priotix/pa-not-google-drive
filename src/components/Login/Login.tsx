@@ -14,7 +14,6 @@ import {
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { userLogin } from '../../store/actions/auth';
-import Icon from '../Icon';
 import './Login.scss';
 
 type FormValues = {
@@ -56,9 +55,6 @@ const Login: React.FC = () => {
       <Grid container item xs={11} sm={6} md={4} xl={3}>
         <Paper className="c-Login__form">
           <Grid item xs={12} className="c-Login__formTitle">
-            <div className="c-Login__logo">
-              <Icon name="win" className="winLogo" />
-            </div>
             <div className="c-Login__titleText">Login</div>
           </Grid>
           <TextField

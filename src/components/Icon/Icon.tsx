@@ -1,9 +1,6 @@
 import React from 'react';
-import WinLogo from '../../static/icons/winLogo.svg';
 
-const Icons = {
-  win: WinLogo,
-};
+const Icons = {};
 
 interface IconProps {
   name: string;
