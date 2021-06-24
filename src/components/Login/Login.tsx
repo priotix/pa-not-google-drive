@@ -1,17 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useForm, Controller } from 'react-hook-form';
-import {
-  Paper,
-  TextField,
-  Grid,
-  InputAdornment,
-  IconButton,
-  Button,
-  Checkbox,
-  FormControlLabel,
-} from '@material-ui/core';
+import { useForm } from 'react-hook-form';
+import { Paper, TextField, Grid, InputAdornment, IconButton, Button } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { userLogin } from '../../store/actions/auth';
 import './Login.scss';
@@ -19,7 +10,6 @@ import './Login.scss';
 type FormValues = {
   email: string;
   password: string;
-  rememberMe: boolean;
 };
 
 const emailRegex =
@@ -31,7 +21,6 @@ const Login: React.FC = () => {
     handleSubmit,
     getValues,
     formState: { errors },
-    control,
   } = useForm<FormValues>({
     mode: 'onChange',
   });
@@ -106,19 +95,6 @@ const Login: React.FC = () => {
             onKeyDown={handleKeyDown}
           />
           <Grid container item xs={12} className="c-Login__buttonsGrid" justify="space-between">
-            <FormControlLabel
-              className="c-Login__chackboxLabel"
-              control={
-                <Controller
-                  name="rememberMe"
-                  control={control}
-                  render={({ field: props }) => (
-                    <Checkbox {...props} onChange={(e) => props.onChange(e.target.checked)} />
-                  )}
-                />
-              }
-              label="Remember Me"
-            />
             <Button
               className="c-Login__loginButton"
               variant="contained"

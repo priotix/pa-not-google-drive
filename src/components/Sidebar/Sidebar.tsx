@@ -1,6 +1,10 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+import { ListAlt } from '@material-ui/icons';
 
 import { Hidden, Drawer, Toolbar } from '@material-ui/core';
+
+import StorageIndicator from '../StorageIndicator';
 
 import './Sidebar.scss';
 
@@ -10,7 +14,22 @@ interface SidebarProps {
 }
 
 const SidebarContent: React.FC = () => {
-  return <div className="c-Sidebar__content">Sidebar</div>;
+  return (
+    <div className="c-Sidebar__content">
+      <nav className="c-SideBar-navigation">
+        <ul>
+          <li>
+            <NavLink to="/">
+              <ListAlt />
+              My Drive
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <hr />
+      <StorageIndicator />
+    </div>
+  );
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {

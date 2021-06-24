@@ -12,9 +12,8 @@ export const userLogin = (loginData: LoginDataInterface): ThunkAction<void, Root
   return async (dispatch) => {
     dispatch({ type: types.USER_LOGIN });
     try {
-      const { rememberMe, ...otherData } = loginData;
       const url = `${configUrl}/auth/login`;
-      const data = await axios.post(url, otherData, { params: { rememberMe: rememberMe || undefined } });
+      const data = await axios.post(url, loginData);
 
       dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
       return data;
@@ -40,6 +39,21 @@ export const createUserData = (data: CreateUserDataInterface): ThunkAction<void,
       toast.error(error.response && error.response.data.message);
       dispatch({ type: types.CREATE_USER_FAILURE, error: error.response && error.response.data });
       return error.response && error.response.data;
+    }
+  };
+};
+
+export const userLogout = (): ThunkAction<void, RootState, null, AuthActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.USER_LOGOUT });
+    try {
+      await axios.post(`${configUrl}/auth/logout`);
+
+      dispatch({ type: types.USER_LOGOUT_SUCCESS, payload: {} });
+      return false;
+    } catch (err) {
+      dispatch({ type: types.USER_LOGOUT_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
     }
   };
 };

@@ -4,6 +4,7 @@ export interface AuthState {
   authData: any;
   isAuthenticated: boolean;
   loginPending: boolean;
+  logoutPending: boolean;
   error: string;
 }
 
@@ -48,10 +49,26 @@ interface CreateUserFailure {
   error: any;
 }
 
+interface UserLogOutPending {
+  type: typeof types.USER_LOGOUT;
+}
+
+interface UserLogOutSuccess {
+  type: typeof types.USER_LOGOUT_SUCCESS;
+  payload: any;
+}
+interface UserLogOutFailure {
+  type: typeof types.USER_LOGOUT_FAILURE;
+  error: any;
+}
+
 export type AuthActions =
   | UserLoginPending
   | UserLoginSuccess
   | UserLoginFailure
   | CreateUserPending
   | CreateUserSuccess
-  | CreateUserFailure;
+  | CreateUserFailure
+  | UserLogOutPending
+  | UserLogOutSuccess
+  | UserLogOutFailure;

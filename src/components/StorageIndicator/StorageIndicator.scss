@@ -1,0 +1,23 @@
+@import '../../scss/mixins.scss';
+
+.c-StorageIndicator {
+  padding: 10px 15px;
+  .c-StorageIndicator__cloudBlock {
+    display: flex;
+    align-items: center;
+    @include fontMixin(20px, "Roboto", 400, unset, unset, #757575);
+    svg {
+      margin-right: 10px;
+    }
+  }
+  .c-StorageIndicator__indicator {
+    width: 100%;
+    height: 5px;
+    margin-top: 10px;
+    border-radius: 2px;
+  }
+  .c-StorageIndicator__label {
+    margin-top: 10px;
+    @include fontMixin(13px, "Roboto", 400, unset, unset, #757575);
+  }
+}
