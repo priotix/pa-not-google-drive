@@ -6,6 +6,7 @@ import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core/styles';
 import { ToastContainer } from 'react-toastify';
 import App from './App';
 import store from './store/store';
+
 import 'react-toastify/dist/ReactToastify.css';
 import './scss/index.scss';
 

@@ -5,6 +5,7 @@ import { selectIsAuthenticated } from './store/selectors/auth';
 
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import Layout from './components/Layout';
 
 const App: React.FC = () => {
   const history = useHistory();
@@ -19,9 +20,11 @@ const App: React.FC = () => {
   }, [isAuthenticated, history]);
 
   return isAuthenticated ? (
-    <Switch>
-      <Route path="/" component={() => <div />} />
-    </Switch>
+    <Layout>
+      <Switch>
+        <Route path="/" component={() => <div> Content </div>} />
+      </Switch>
+    </Layout>
   ) : (
     <Switch>
       {/* Login Page */}

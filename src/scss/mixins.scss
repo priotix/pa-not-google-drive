@@ -13,3 +13,9 @@
   letter-spacing: $letter-spacing;
   color: $color;
 }
+
+@mixin screen($width) {
+  @media screen and (max-width: $width) {
+    @content;
+  }
+}

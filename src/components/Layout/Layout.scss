@@ -1,0 +1,11 @@
+@import 'src/scss/mixins';
+
+.c-Layout {
+  .c-Layout__main {
+    margin-left: 250px;
+
+    @include screen(991px) {
+      margin-left: 0;
+    }
+  }
+}
