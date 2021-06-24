@@ -12,15 +12,11 @@
 }
 
 .c-Login__formTitle {
-  @include fontMixin(18px, "Roboto", 400, unset, unset, #757575);
+  @include fontMixin(20px, "Roboto", 400, unset, unset, #757575);
   display: flex;
   align-items: center;
   padding-bottom: 15px;
   margin-bottom: 25px;
-}
-
-.c-Login__titleText {
-  margin-left: 15px;
 }
 
 .c-Login__logo {
