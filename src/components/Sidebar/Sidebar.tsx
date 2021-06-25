@@ -5,6 +5,7 @@ import { ListAlt } from '@material-ui/icons';
 import { Hidden, Drawer, Toolbar } from '@material-ui/core';
 
 import StorageIndicator from '../StorageIndicator';
+import NewButton from '../NewButton';
 
 import './Sidebar.scss';
 
@@ -16,6 +17,7 @@ interface SidebarProps {
 const SidebarContent: React.FC = () => {
   return (
     <div className="c-Sidebar__content">
+      <NewButton />
       <nav className="c-SideBar-navigation">
         <ul>
           <li>

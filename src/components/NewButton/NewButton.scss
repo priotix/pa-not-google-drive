@@ -1,0 +1,30 @@
+@import '../../scss/mixins.scss';
+
+.c-NewButton {
+  display: flex;
+  margin-bottom: 25px;
+  padding-left: 15px;
+  position: relative;
+  .c-NewButton__button {
+    border-radius: 20px;
+  }
+}
+
+.c-NewButton__popoverItems {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  @include fontMixin(16px, "Roboto", 400, unset, unset, #757575);
+  cursor: pointer;
+  input {
+    display: none;
+  }
+  label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  &:hover {
+    background: #e8f0fe;
+  }
+}
