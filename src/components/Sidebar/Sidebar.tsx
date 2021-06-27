@@ -16,10 +16,10 @@ interface SidebarProps {
 const SidebarContent: React.FC = () => {
   return (
     <div className="c-Sidebar__content">
-      <nav className="c-SideBar-navigation">
+      <nav className="c-Sidebar__navigation">
         <ul>
           <li>
-            <NavLink to="/">
+            <NavLink to="/storage">
               <ListAlt />
               My Drive
             </NavLink>

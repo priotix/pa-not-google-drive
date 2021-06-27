@@ -4,7 +4,7 @@ import { Cloud } from '@material-ui/icons';
 import './StorageIndicator.scss';
 
 const StorageIndicator: React.FC = () => {
-  const [usedSpase, setUsedSpase] = useState(1000);
+  const [usedSpace, setUsedSpace] = useState(1000);
   const maxPlace = 10000;
 
   const changeProgressPercentage = (used) => {
@@ -20,8 +20,8 @@ const StorageIndicator: React.FC = () => {
   };
 
   useEffect(() => {
-    changeProgressPercentage(usedSpase);
-  }, [usedSpase]);
+    changeProgressPercentage(usedSpace);
+  }, [usedSpace]);
 
   return (
     <div className="c-StorageIndicator">
@@ -29,7 +29,7 @@ const StorageIndicator: React.FC = () => {
         <Cloud /> Storage
       </div>
       <div className="c-StorageIndicator__indicator" id="indicator" />
-      <div className="c-StorageIndicator__label">{`${usedSpase} MB of ${maxPlace} MB used`}</div>
+      <div className="c-StorageIndicator__label">{`${usedSpace} MB of ${maxPlace} MB used`}</div>
     </div>
   );
 };

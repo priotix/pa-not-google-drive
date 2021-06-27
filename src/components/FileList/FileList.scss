@@ -1,0 +1,19 @@
+.c-FileList {
+  .c-FileList__listItem {
+    padding-right: 80px;
+  }
+
+  .c-FileList__listItem--largePadding {
+    padding-right: 120px;
+  }
+
+  .c-FileList__folderAvatar {
+    background-color: #4c8bf5;
+  }
+
+  .c-FileList__itemName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

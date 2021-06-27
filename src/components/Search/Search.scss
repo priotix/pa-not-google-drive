@@ -1,0 +1,29 @@
+.c-Search {
+  position: relative;
+  width: 245px;
+  max-width: 100%;
+  margin: 0 20px;
+
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.15);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .c-Search__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    height: 100%;
+    margin-left: 5px;
+    pointer-events: none;
+  }
+
+  .c-Search__input {
+    margin-left: 35px;
+    color: inherit;
+  }
+}

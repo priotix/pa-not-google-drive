@@ -10,18 +10,21 @@
 .c-Sidebar__content {
   padding-top: 25px;
   width: 250px;
-  .c-SideBar-navigation {
+
+  .c-Sidebar__navigation {
     margin-bottom: 25px;
+
     ul {
       li {
         a {
           display: flex;
           align-items: center;
-          padding: 10px 15px;
-          @include fontMixin(20px, "Roboto", 400, unset, unset, #757575);
+          padding: 10px 24px;
+          @include fontMixin(20px, 'Roboto', 400, unset, unset, #757575);
           border-bottom-right-radius: 20px;
           border-top-right-radius: 20px;
           background-color: #e8f0fe;
+
           svg {
             margin-right: 15px;
           }

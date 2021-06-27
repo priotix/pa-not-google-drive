@@ -1,33 +1,29 @@
-import React, { useEffect } from 'react';
-import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from './store/selectors/auth';
 
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Layout from './components/Layout';
+
+const Layout = React.lazy(() => import('./components/Layout'));
+const FileList = React.lazy(() => import('./components/FileList'));
 
 const App: React.FC = () => {
-  const history = useHistory();
   const location = useLocation();
   const { isAuthenticated } = useSelector(selectIsAuthenticated);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      return;
-    }
-    history.push('/');
-  }, [isAuthenticated, history]);
-
   return isAuthenticated ? (
-    <Layout>
-      <Switch>
-        <Route path="/" component={() => <div> Content </div>} />
-      </Switch>
-    </Layout>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Layout>
+        <Switch>
+          <Route path="/storage" component={() => <FileList />} />
+          <Redirect to="/storage" />
+        </Switch>
+      </Layout>
+    </Suspense>
   ) : (
     <Switch>
-      {/* Login Page */}
       <Route exact path="/login" component={() => <Login />} />
       <Route path="/sign-up" component={() => <SignUp />} />
       <Redirect push to={{ pathname: '/login', state: { from: location.pathname } }} />
