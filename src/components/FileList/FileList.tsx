@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 
 import {
@@ -103,6 +104,7 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
   const [newName, setNewName] = useState('');
   const [dialogType, setDialogType] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
+  const location = useLocation();
 
   const handleDialogOpen = (type: string, index: number) => {
     setDialogType(type);
@@ -151,11 +153,11 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
               button={type === 'folder'}
               ContainerComponent="div"
               ContainerProps={{ style }}
-              component={type === 'folder' ? 'a' : 'div'}
-              href={slug}
+              component={type === 'folder' ? Link : 'div'}
+              to={`${location.pathname}/${slug}`}
             >
               <ListItemAvatar>
-                <Avatar className={!isFile && 'c-FileList__folderAvatar'}>
+                <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
                   {isFile ? <FileIcon /> : <FolderIcon />}
                 </Avatar>
               </ListItemAvatar>

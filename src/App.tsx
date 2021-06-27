@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import React, { Suspense } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -17,8 +18,8 @@ const App: React.FC = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Layout>
         <Switch>
-          <Route path="/storage" component={() => <FileList />} />
-          <Redirect to="/storage" />
+          <Route path="/storage" children={(props) => props.match && <FileList />} />
+          <Redirect from="/" to="/storage" />
         </Switch>
       </Layout>
     </Suspense>
