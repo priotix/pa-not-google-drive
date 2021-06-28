@@ -33,6 +33,7 @@ const App: React.FC = () => {
       <Layout>
         <Switch>
           <Route path="/storage" children={(props) => props.match && <FileList />} />
+          <Redirect push to={{ pathname: '/storage', state: { from: location.pathname } }} />
         </Switch>
       </Layout>
     </Suspense>

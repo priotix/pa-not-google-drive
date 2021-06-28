@@ -31,10 +31,8 @@ export const createUserData = (data: CreateUserDataInterface): ThunkAction<void,
       const url = `${configUrl}/auth/register`;
       dispatch({ type: types.CREATE_USER_PENDING });
       const response = await axios.post(url, data);
-
       toast.success('User created successfully.');
       dispatch({ type: types.CREATE_USER_SUCCESS, payload: response.data });
-      return response.data;
     } catch (error) {
       toast.error(error.response && error.response.data.message);
       dispatch({ type: types.CREATE_USER_FAILURE, error: error.response && error.response.data });

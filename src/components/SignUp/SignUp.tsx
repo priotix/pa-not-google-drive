@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Paper, TextField, Grid, InputAdornment, IconButton, Button } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { createUserData } from '../../store/actions/auth';
@@ -27,10 +27,15 @@ const SignUp: React.FC = () => {
     mode: 'onChange',
   });
   const dispatch = useDispatch();
+  const history = useHistory();
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
-  const onSubmit = (data) => {
-    dispatch(createUserData(data));
+  const onSubmit = async (data) => {
+    const response = await dispatch(createUserData(data));
+    if (response) {
+      return;
+    }
+    history.push('/login');
   };
 
   const handleKeyDown = (e) => {
