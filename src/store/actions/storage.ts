@@ -14,10 +14,10 @@ export const getStorageData = (): ThunkAction<void, RootState, null, StorageActi
   return async (dispatch) => {
     dispatch({ type: types.GET_STORAGE_DATA });
     try {
-      const url = `${configUrl}/items?type=file|dir`;
+      const url = `${configUrl}/items`;
       const data = await axios.get(url, {
         headers: {
-          Authorization: accessToken,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
 
