@@ -41,6 +41,7 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/return-await": "off",
     "@typescript-eslint/no-unused-expressions": "off",
+    "react-hooks/exhaustive-deps": "off",
     "prettier/prettier": [
       "error",
       {

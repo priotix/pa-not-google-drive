@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Popover, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Add, CreateNewFolder, Attachment } from '@material-ui/icons';
-import { createFolder } from '../../store/actions/storage';
+import { createFolder, uploudFile } from '../../store/actions/storage';
 
 import './NewButton.scss';
 
@@ -32,9 +32,15 @@ const NewButton: React.FC = () => {
     setFolderName(value);
   };
 
-  const onCreateFolder = async () => {
-    await dispatch(createFolder(folderName));
+  const onCreateFolder = () => {
+    dispatch(createFolder(folderName));
     handleCloseModal();
+  };
+
+  const onUploudFile = (e) => {
+    const file = e.target.files[0];
+    const { size, name } = file;
+    dispatch(uploudFile(name, size, file));
   };
 
   const open = Boolean(anchorEl);
@@ -70,7 +76,7 @@ const NewButton: React.FC = () => {
           style: { width: '220px' },
         }}
       >
-        <div className="c-NewButton__popoverItem" onClick={handleOpenModal} role="button" onKeyPress={handleOpenModal}>
+        <div className="c-NewButton__popoverItems" onClick={handleOpenModal} role="button" onKeyPress={handleOpenModal}>
           <CreateNewFolder /> Folder
         </div>
         <Dialog open={openModal} onClose={handleCloseModal} aria-labelledby="form-dialog-title">
@@ -96,8 +102,8 @@ const NewButton: React.FC = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <div className="c-NewButton__popoverItem">
-          <input id="contained-button-file" type="file" />
+        <div className="c-NewButton__popoverItems">
+          <input id="contained-button-file" type="file" onChange={onUploudFile} />
           <label htmlFor="contained-button-file">
             <Attachment /> File upload
           </label>
