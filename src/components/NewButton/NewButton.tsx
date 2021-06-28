@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Popover, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Add, CreateNewFolder, Attachment } from '@material-ui/icons';
+import { createFolder } from '../../store/actions/storage';
 
 import './NewButton.scss';
 
@@ -11,6 +13,8 @@ const NewButton: React.FC = () => {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const [folderName, setFolderName] = useState('');
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -22,6 +26,15 @@ const NewButton: React.FC = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+
+  const onChangeFolderName = (value) => {
+    setFolderName(value);
+  };
+
+  const onCreateFolder = async () => {
+    await dispatch(createFolder(folderName));
+    handleCloseModal();
   };
 
   const open = Boolean(anchorEl);
@@ -63,13 +76,22 @@ const NewButton: React.FC = () => {
         <Dialog open={openModal} onClose={handleCloseModal} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">New Folder</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="dense" id="name" label="Folder Name" type="text" fullWidth />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Folder Name"
+              type="text"
+              fullWidth
+              value={folderName}
+              onChange={(e) => onChangeFolderName(e.target.value)}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseModal} color="primary">
               Cancel
             </Button>
-            <Button onClick={handleCloseModal} color="primary">
+            <Button onClick={onCreateFolder} color="primary" disabled={!folderName}>
               Create
             </Button>
           </DialogActions>

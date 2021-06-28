@@ -20,4 +20,24 @@ interface GetStorageDataFailure {
   error: any;
 }
 
-export type StorageActions = GetStorageDataPending | GetStorageDataSuccess | GetStorageDataFailure;
+interface CreateFolder {
+  type: typeof types.CREATE_FOLDER;
+}
+
+interface CreateFolderSuccess {
+  type: typeof types.CREATE_FOLDER_SUCCESS;
+  payload: any;
+}
+
+interface CreateFolderFailure {
+  type: typeof types.CREATE_FOLDER_FAILURE;
+  error: any;
+}
+
+export type StorageActions =
+  | GetStorageDataPending
+  | GetStorageDataSuccess
+  | GetStorageDataFailure
+  | CreateFolder
+  | CreateFolderSuccess
+  | CreateFolderFailure;

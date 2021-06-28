@@ -30,3 +30,28 @@ export const getStorageData = (): ThunkAction<void, RootState, null, StorageActi
     }
   };
 };
+
+export const createFolder = (name: string, parentId?: string): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.CREATE_FOLDER });
+    try {
+      const url = `${configUrl}/items`;
+      const data = await axios.post(
+        url,
+        { name, parentId },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      dispatch({ type: types.CREATE_FOLDER_SUCCESS, payload: data.data });
+      return data;
+    } catch (err) {
+      toast.error(err.response ? err.response.data.message : err.toString());
+      dispatch({ type: types.CREATE_FOLDER_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
+    }
+  };
+};
