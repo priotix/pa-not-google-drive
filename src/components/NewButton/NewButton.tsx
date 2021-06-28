@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Popover, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Add, CreateNewFolder, Attachment } from '@material-ui/icons';
-import { createFolder, uploudFile } from '../../store/actions/storage';
+import { createFolder, uploudFile, getStorageData } from '../../store/actions/storage';
+import { selectParentId } from '../../store/selectors/storage';
 
 import './NewButton.scss';
 
@@ -14,6 +15,7 @@ const NewButton: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
   const [folderName, setFolderName] = useState('');
+  const parentId = useSelector(selectParentId);
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -32,15 +34,17 @@ const NewButton: React.FC = () => {
     setFolderName(value);
   };
 
-  const onCreateFolder = () => {
-    dispatch(createFolder(folderName));
+  const onCreateFolder = async () => {
+    await dispatch(createFolder(folderName, parentId));
+    await dispatch(getStorageData(parentId));
     handleCloseModal();
   };
 
-  const onUploudFile = (e) => {
+  const onUploudFile = async (e) => {
     const file = e.target.files[0];
     const { size, name } = file;
-    dispatch(uploudFile(name, size, file));
+    await dispatch(uploudFile(name, size, file, parentId));
+    await dispatch(getStorageData(parentId));
   };
 
   const open = Boolean(anchorEl);

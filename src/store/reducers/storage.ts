@@ -2,9 +2,12 @@ import * as types from '../actionTypes/storage';
 import { StorageState, StorageActions } from '../types/storage';
 
 const initialState = {
-  storageData: {},
+  storageData: {
+    documents: [],
+  },
   getDataPending: false,
   error: null,
+  parentId: null,
 };
 
 export const reducer = (state = initialState, action: StorageActions): StorageState => {
@@ -19,6 +22,8 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
       };
     case types.GET_STORAGE_DATA_FAILURE:
       return { ...state, error: action.error, getDataPending: false };
+    case types.SET_PARENTID:
+      return { ...state, parentId: action.id };
     default:
       return state;
   }

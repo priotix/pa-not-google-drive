@@ -1,9 +1,18 @@
 import * as types from '../actionTypes/storage';
 
+export interface StorageDataItem {
+  id: string;
+  name: string;
+  type: string;
+}
+
 export interface StorageState {
-  storageData: any;
+  storageData: {
+    documents: StorageDataItem[];
+  };
   getDataPending: boolean;
   error: string;
+  parentId: null | string;
 }
 
 interface GetStorageDataPending {
@@ -48,6 +57,11 @@ interface UploudFileFailure {
   error: any;
 }
 
+interface SetParentId {
+  type: typeof types.SET_PARENTID;
+  id: string | null;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
@@ -57,4 +71,5 @@ export type StorageActions =
   | CreateFolderFailure
   | UploudFile
   | UploudFileSuccess
-  | UploudFileFailure;
+  | UploudFileFailure
+  | SetParentId;

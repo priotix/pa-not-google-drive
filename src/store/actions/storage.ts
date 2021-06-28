@@ -10,11 +10,12 @@ import { loadState } from '../../libs/localStorage';
 const configUrl = config.globals.urlStorageHost;
 const { accessToken } = loadState().auth.authData;
 
-export const getStorageData = (): ThunkAction<void, RootState, null, StorageActions> => {
+export const getStorageData = (parentId?: string): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.GET_STORAGE_DATA });
     try {
-      const url = `${configUrl}/items`;
+      const parent = parentId ? `?parent=${parentId}` : '';
+      const url = `${configUrl}/items${parent}`;
       const data = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${accessToken}`,

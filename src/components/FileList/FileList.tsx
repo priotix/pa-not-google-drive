@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   TextField,
@@ -23,97 +23,27 @@ import {
   Folder as FolderIcon,
   Delete as DeleteIcon,
   InsertDriveFile as FileIcon,
-  GetApp as DownloadIcon,
   Edit as EditIcon,
 } from '@material-ui/icons';
 
 import { getStorageData } from '../../store/actions/storage';
-
+import { selectStorageData, selectParentId } from '../../store/selectors/storage';
 import './FileList.scss';
 
-interface FileListProps {
-  data?: {
-    type: string;
-    slug: string;
-    name: string;
-  }[];
-}
-
-const sampleData = [
-  {
-    type: 'folder',
-    slug: 'folder-1',
-    name: 'Folder 1 aaaaaaaa aaaaaaa aaaa aaaaaa aaaaa aaaa',
-  },
-  {
-    type: 'folder',
-    slug: 'folder-2',
-    name: 'Folder 2',
-  },
-  {
-    type: 'folder',
-    slug: 'folder-3',
-    name: 'Folder 3',
-  },
-  {
-    type: 'folder',
-    slug: 'folder-4',
-    name: 'Folder 4',
-  },
-  {
-    type: 'file',
-    slug: 'file-1',
-    name: 'File 1 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-  },
-  {
-    type: 'file',
-    slug: 'file-2',
-    name: 'File 2',
-  },
-  {
-    type: 'file',
-    slug: 'file-3',
-    name: 'File 3',
-  },
-  {
-    type: 'file',
-    slug: 'file-4',
-    name: 'File 4',
-  },
-  {
-    type: 'file',
-    slug: 'file-5',
-    name: 'File 5',
-  },
-  {
-    type: 'file',
-    slug: 'file-6',
-    name: 'File 6',
-  },
-  {
-    type: 'file',
-    slug: 'file-7',
-    name: 'File 7',
-  },
-  {
-    type: 'file',
-    slug: 'file-8',
-    name: 'File 8',
-  },
-];
-
-const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
+const FileList: React.FC = () => {
   const [listHeight, setListHeight] = useState(0);
   const [newName, setNewName] = useState('');
   const [dialogType, setDialogType] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const location = useLocation();
   const dispatch = useDispatch();
+  const storageData = useSelector(selectStorageData);
+  const parentId = useSelector(selectParentId);
 
   const handleDialogOpen = (type: string, index: number) => {
     setDialogType(type);
     setSelectedEntry(index);
-    setNewName(data[index].name);
+    setNewName(storageData[index].name);
   };
 
   const handleDialogClose = () => {
@@ -143,14 +73,14 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(getStorageData());
-  }, [location.pathname, dispatch]);
+    dispatch(getStorageData(parentId));
+  }, [parentId]);
 
   return (
     <div className="c-FileList">
-      <FixedSizeList height={listHeight} width="100%" itemSize={56} itemCount={sampleData.length}>
+      <FixedSizeList height={listHeight} width="100%" itemSize={56} itemCount={storageData.length}>
         {({ index, style }) => {
-          const { name, slug, type } = data[index];
+          const { name, id, type } = storageData[index];
           const isFile = type === 'file';
           return (
             <ListItem
@@ -161,8 +91,8 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
               button={type === 'folder'}
               ContainerComponent="div"
               ContainerProps={{ style }}
-              component={type === 'folder' ? Link : 'div'}
-              to={`${location.pathname}/${slug}`}
+              component={type === 'dir' ? Link : 'div'}
+              to={`${location.pathname}/${id}`}
             >
               <ListItemAvatar>
                 <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
@@ -171,11 +101,6 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
               </ListItemAvatar>
               <ListItemText classes={{ primary: 'c-FileList__itemName' }} primary={name} />
               <ListItemSecondaryAction>
-                {isFile && (
-                  <IconButton edge="end" aria-label="download">
-                    <DownloadIcon />
-                  </IconButton>
-                )}
                 <IconButton
                   color="primary"
                   edge="end"
