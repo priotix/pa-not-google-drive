@@ -15,7 +15,7 @@ export const userLogin = (loginData: LoginDataInterface): ThunkAction<void, Root
       const url = `${configUrl}/auth/login`;
       const data = await axios.post(url, loginData);
 
-      dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data });
+      dispatch({ type: types.USER_LOGIN_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
       toast.error(err.response ? err.response.data.message : err.toString());
@@ -47,13 +47,11 @@ export const userLogout = (): ThunkAction<void, RootState, null, AuthActions> =>
   return async (dispatch) => {
     dispatch({ type: types.USER_LOGOUT });
     try {
-      await axios.post(`${configUrl}/auth/logout`);
-
       dispatch({ type: types.USER_LOGOUT_SUCCESS, payload: {} });
       return false;
     } catch (err) {
-      dispatch({ type: types.USER_LOGOUT_FAILURE, error: err.response && err.response.data });
-      return err.response && err.response.data;
+      dispatch({ type: types.USER_LOGOUT_FAILURE, error: 'Logout failed' });
+      return 'Logout failed';
     }
   };
 };
