@@ -28,7 +28,7 @@ export const userLogin = (loginData: LoginDataInterface): ThunkAction<void, Root
 export const createUserData = (data: CreateUserDataInterface): ThunkAction<void, RootState, null, AuthActions> => {
   return async (dispatch) => {
     try {
-      const url = `${configUrl}/users/create`;
+      const url = `${configUrl}/auth/register`;
       dispatch({ type: types.CREATE_USER_PENDING });
       const response = await axios.post(url, data);
 
