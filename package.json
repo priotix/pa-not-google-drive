@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",
+    "webpack-build": "webpack --mode production",
     "dev": "npm-run-all -p build-config start",
     "start": "webpack serve",
     "build-config": "node scripts/generate-config",
-    "build": "rimraf ./dist && webpack --mode production",
+    "build": "rimraf ./dist && npm-run-all build-config webpack-build",
     "lint": "tsc --noEmit && eslint --fix src/**/*.ts{,x}",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
