@@ -1,7 +1,8 @@
 {
   "content": {
     "globals": {
-      "urlAdminsHost": "http://pa-api-users.priotix.xyz:8080"
+      "urlAdminsHost": "http://pa-api-users.priotix.xyz:8080",
+      "urlStorageHost": "http://pa-api-storage.priotix.xyz:8080"
     }
   }
 }

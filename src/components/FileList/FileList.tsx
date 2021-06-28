@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
+import { useDispatch } from 'react-redux';
 
 import {
   TextField,
@@ -25,6 +26,8 @@ import {
   GetApp as DownloadIcon,
   Edit as EditIcon,
 } from '@material-ui/icons';
+
+import { getStorageData } from '../../store/actions/storage';
 
 import './FileList.scss';
 
@@ -105,6 +108,7 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
   const [dialogType, setDialogType] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const handleDialogOpen = (type: string, index: number) => {
     setDialogType(type);
@@ -137,6 +141,10 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
     window.addEventListener('resize', updateListHeight);
     return () => window.removeEventListener('resize', updateListHeight);
   }, []);
+
+  useEffect(() => {
+    dispatch(getStorageData());
+  }, [location.pathname, dispatch]);
 
   return (
     <div className="c-FileList">
