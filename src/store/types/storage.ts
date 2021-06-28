@@ -34,10 +34,27 @@ interface CreateFolderFailure {
   error: any;
 }
 
+interface UploudFile {
+  type: typeof types.UPLOUD_FILE;
+}
+
+interface UploudFileSuccess {
+  type: typeof types.UPLOUD_FILE_SUCCESS;
+  payload: any;
+}
+
+interface UploudFileFailure {
+  type: typeof types.UPLOUD_FILE_FAILURE;
+  error: any;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
   | GetStorageDataFailure
   | CreateFolder
   | CreateFolderSuccess
-  | CreateFolderFailure;
+  | CreateFolderFailure
+  | UploudFile
+  | UploudFileSuccess
+  | UploudFileFailure;
