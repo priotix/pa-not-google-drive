@@ -26,8 +26,10 @@ import {
   Edit as EditIcon,
 } from '@material-ui/icons';
 
-import { getStorageData, deleteFile, renameFile } from '../../store/actions/storage';
-import { selectStorageData, selectParentId } from '../../store/selectors/storage';
+import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
+import { selectStorageData } from '../../store/selectors/storage';
+
+import { getParentId } from '../../libs/getParentId';
 import './FileList.scss';
 
 const FileList: React.FC = () => {
@@ -35,10 +37,21 @@ const FileList: React.FC = () => {
   const [newName, setNewName] = useState('');
   const [dialogType, setDialogType] = useState(null);
   const [selectedEntry, setSelectedEntry] = useState(null);
-  const location = useLocation();
+
   const dispatch = useDispatch();
   const storageData = useSelector(selectStorageData);
-  const parentId = useSelector(selectParentId);
+
+  const { pathname, search } = useLocation();
+  const searchQuery = new URLSearchParams(search).get('search');
+  const parentId = getParentId(pathname);
+
+  const getFiles = () => {
+    if (searchQuery) {
+      dispatch(searchFiles(searchQuery));
+    } else {
+      dispatch(getStorageData(parentId));
+    }
+  };
 
   const handleDialogOpen = (type: string, index: string) => {
     setDialogType(type);
@@ -53,13 +66,13 @@ const FileList: React.FC = () => {
 
   const handleRename = async () => {
     await dispatch(renameFile(selectedEntry, newName));
-    await dispatch(getStorageData(parentId));
+    getFiles();
     handleDialogClose();
   };
 
   const handleDelete = async () => {
     await dispatch(deleteFile(selectedEntry));
-    await dispatch(getStorageData(parentId));
+    getFiles();
     handleDialogClose();
   };
 
@@ -75,14 +88,14 @@ const FileList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getStorageData(parentId));
-  }, [parentId]);
+    getFiles();
+  }, [searchQuery, parentId]);
 
   return (
     <div className="c-FileList">
       <FixedSizeList height={listHeight} width="100%" itemSize={56} itemCount={storageData.length}>
         {({ index, style }) => {
-          const { name, id, type } = storageData[index];
+          const { name, id, type, parentIds } = storageData[index];
           const isFile = type === 'file';
           return (
             <ListItem
@@ -92,7 +105,7 @@ const FileList: React.FC = () => {
               ContainerComponent="div"
               ContainerProps={{ style }}
               component={type === 'dir' ? Link : 'div'}
-              to={`${location.pathname}/${id}`}
+              to={`${pathname}/${searchQuery ? `${parentIds.reverse().join('/')}/` : ''}${id}`}
             >
               <ListItemAvatar>
                 <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
@@ -124,10 +137,11 @@ const FileList: React.FC = () => {
           <TextField
             autoFocus
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
             margin="dense"
             label="New name"
             fullWidth
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && newName && handleRename()}
           />
         </DialogContent>
 

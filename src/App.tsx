@@ -4,6 +4,8 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuthData } from './store/selectors/auth';
 
+import { getParentId } from './libs/getParentId';
+
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 
@@ -15,17 +17,9 @@ const App: React.FC = () => {
   const { isAuthenticated } = useSelector(selectAuthData);
   const dispatch = useDispatch();
 
-  const getParentId = (pathname) => {
-    const parentIds = pathname.split('/');
-    if (parentIds.length === 2) {
-      dispatch({ type: 'SET_PARENTID', id: null });
-      return;
-    }
-    dispatch({ type: 'SET_PARENTID', id: parentIds[parentIds.length - 1] });
-  };
-
   useEffect(() => {
     getParentId(location.pathname);
+    dispatch({ type: 'SET_PARENTID', id: getParentId(location.pathname) });
   }, [location.pathname]);
 
   return isAuthenticated ? (

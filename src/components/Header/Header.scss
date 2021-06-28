@@ -1,9 +1,21 @@
+@import 'src/scss/mixins.scss';
+
 .c-Header {
+  .c-Header__title {
+    margin-right: 190px;
+  }
+
   .c-Header__logoutButton {
     margin-left: auto;
   }
 
   .c-Header__toolbar {
     padding: 0 16px;
+  }
+
+  @include screen(599px) {
+    .c-Header__title {
+      margin-right: 0;
+    }
   }
 }

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Popover, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import { Add, CreateNewFolder, Attachment } from '@material-ui/icons';
-import { createFolder, uploudFile, getStorageData } from '../../store/actions/storage';
+import { createFolder, uploadFile, getStorageData } from '../../store/actions/storage';
 import { selectParentId } from '../../store/selectors/storage';
 
 import './NewButton.scss';
@@ -28,6 +28,7 @@ const NewButton: React.FC = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+    setFolderName('');
   };
 
   const onChangeFolderName = (value) => {
@@ -46,10 +47,10 @@ const NewButton: React.FC = () => {
     handleCloseModal();
   };
 
-  const onUploudFile = async (e) => {
+  const onUploadFile = async (e) => {
     const file = e.target.files[0];
     const { size, name } = file;
-    await dispatch(uploudFile(name, size, file, parentId));
+    await dispatch(uploadFile(name, size, file, parentId));
     await dispatch(getStorageData(parentId));
   };
 
@@ -101,6 +102,7 @@ const NewButton: React.FC = () => {
               fullWidth
               value={folderName}
               onChange={(e) => onChangeFolderName(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && folderName && onCreateFolder()}
             />
           </DialogContent>
           <DialogActions>
@@ -113,7 +115,7 @@ const NewButton: React.FC = () => {
           </DialogActions>
         </Dialog>
         <div className="c-NewButton__popoverItems">
-          <input id="contained-button-file" type="file" onChange={onUploudFile} />
+          <input id="contained-button-file" type="file" onChange={onUploadFile} />
           <label htmlFor="contained-button-file">
             <Attachment /> File upload
           </label>

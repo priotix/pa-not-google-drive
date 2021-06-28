@@ -4,6 +4,7 @@ export interface StorageDataItem {
   id: string;
   name: string;
   type: string;
+  parentIds: string[];
 }
 
 export interface StorageState {
@@ -43,16 +44,16 @@ interface CreateFolderFailure {
   error: any;
 }
 
-interface UploudFile {
+interface UploadFile {
   type: typeof types.UPLOUD_FILE;
 }
 
-interface UploudFileSuccess {
+interface UploadFileSuccess {
   type: typeof types.UPLOUD_FILE_SUCCESS;
   payload: any;
 }
 
-interface UploudFileFailure {
+interface UploadFileFailure {
   type: typeof types.UPLOUD_FILE_FAILURE;
   error: any;
 }
@@ -90,6 +91,20 @@ interface RenameFileFailure {
   error: any;
 }
 
+interface SearchFilesPending {
+  type: typeof types.SEARCH_FILES;
+}
+
+interface SearchFilesSuccess {
+  type: typeof types.SEARCH_FILES_SUCCESS;
+  payload: any;
+}
+
+interface SearchFilesFailure {
+  type: typeof types.SEARCH_FILES_FAILURE;
+  error: any;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
@@ -97,13 +112,16 @@ export type StorageActions =
   | CreateFolder
   | CreateFolderSuccess
   | CreateFolderFailure
-  | UploudFile
-  | UploudFileSuccess
-  | UploudFileFailure
+  | UploadFile
+  | UploadFileSuccess
+  | UploadFileFailure
   | SetParentId
   | DeleteFile
   | DeleteFileSuccess
   | DeleteFileFailure
   | RenameFile
   | RenameFileSuccess
-  | RenameFileFailure;
+  | RenameFileFailure
+  | SearchFilesPending
+  | SearchFilesSuccess
+  | SearchFilesFailure;

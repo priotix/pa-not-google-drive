@@ -22,6 +22,18 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
       };
     case types.GET_STORAGE_DATA_FAILURE:
       return { ...state, error: action.error, getDataPending: false };
+
+    case types.SEARCH_FILES:
+      return { ...state, getDataPending: true };
+    case types.SEARCH_FILES_SUCCESS:
+      return {
+        ...state,
+        storageData: action.payload,
+        getDataPending: false,
+      };
+    case types.SEARCH_FILES_FAILURE:
+      return { ...state, error: action.error, getDataPending: false };
+
     case types.SET_PARENTID:
       return { ...state, parentId: action.id };
     default:

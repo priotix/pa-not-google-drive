@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { Hidden, Typography, AppBar, Toolbar, IconButton, Button } from '@material-ui/core';
@@ -14,14 +15,13 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
-  const [searchQuery, setSearchQuery] = useState(null);
+  const history = useHistory();
   const dispatch = useDispatch();
+  const searchQuery = new URLSearchParams(useLocation().search).get('search');
 
-  useEffect(() => {
-    if (searchQuery != null) {
-      // make search request
-    }
-  }, [searchQuery]);
+  const setSearchQuery = (query: string) => {
+    query ? history.push(`/storage?search=${query}`) : history.push(`/storage`);
+  };
 
   return (
     <div className="c-Header">
@@ -32,7 +32,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               <MenuIcon />
             </IconButton>
           </Hidden>
-          <Typography variant="h6">Files</Typography>
+          <Typography variant="h6" className="c-Header__title">
+            Files
+          </Typography>
           <Search value={searchQuery} onChange={(query) => setSearchQuery(query)} />
           <Button
             color="inherit"

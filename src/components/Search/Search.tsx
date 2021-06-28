@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import InputBase from '@material-ui/core/InputBase';
-import { Search as SearchIcon } from '@material-ui/icons';
+import { InputBase, IconButton } from '@material-ui/core';
+import { Search as SearchIcon, Clear as ClearIcon } from '@material-ui/icons';
 
 import './Search.scss';
 
@@ -18,13 +18,15 @@ const Search: React.FC<SearchProps> = ({ value, onChange }) => {
       const timeoutId = setTimeout(() => onChange(inputValue), 500);
       return () => clearTimeout(timeoutId);
     }
-  }, [value, inputValue, onChange]);
+  }, [inputValue, onChange]);
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   return (
     <div className="c-Search">
-      <div className="c-Search__icon">
-        <SearchIcon />
-      </div>
+      <SearchIcon className="c-Search__searchIcon" />
       <InputBase
         value={inputValue || ''}
         onChange={(e) => setInputValue(e.target.value)}
@@ -32,6 +34,11 @@ const Search: React.FC<SearchProps> = ({ value, onChange }) => {
         className="c-Search__input"
         inputProps={{ 'aria-label': 'search' }}
       />
+      {inputValue && (
+        <IconButton size="small" onClick={() => setInputValue('')}>
+          <ClearIcon className="c-Search__clearIcon" />
+        </IconButton>
+      )}
     </div>
   );
 };

@@ -1,4 +1,6 @@
 .c-Search {
+  display: flex;
+
   position: relative;
   width: 245px;
   max-width: 100%;
@@ -11,7 +13,12 @@
     background-color: rgba(255, 255, 255, 0.25);
   }
 
-  .c-Search__icon {
+  .c-Search__input {
+    margin-left: 35px;
+    color: inherit;
+  }
+
+  .c-Search__searchIcon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,8 +29,7 @@
     pointer-events: none;
   }
 
-  .c-Search__input {
-    margin-left: 35px;
-    color: inherit;
+  .c-Search__clearIcon {
+    color: white;
   }
 }
