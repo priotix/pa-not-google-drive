@@ -26,7 +26,7 @@ import {
   Edit as EditIcon,
 } from '@material-ui/icons';
 
-import { getStorageData } from '../../store/actions/storage';
+import { getStorageData, deleteFile, renameFile } from '../../store/actions/storage';
 import { selectStorageData, selectParentId } from '../../store/selectors/storage';
 import './FileList.scss';
 
@@ -40,10 +40,10 @@ const FileList: React.FC = () => {
   const storageData = useSelector(selectStorageData);
   const parentId = useSelector(selectParentId);
 
-  const handleDialogOpen = (type: string, index: number) => {
+  const handleDialogOpen = (type: string, index: string) => {
     setDialogType(type);
     setSelectedEntry(index);
-    setNewName(storageData[index].name);
+    setNewName(storageData.find((item) => item.id === index).name);
   };
 
   const handleDialogClose = () => {
@@ -51,13 +51,15 @@ const FileList: React.FC = () => {
     setNewName('');
   };
 
-  const handleRename = () => {
-    // rename selectedEntry
+  const handleRename = async () => {
+    await dispatch(renameFile(selectedEntry, newName));
+    await dispatch(getStorageData(parentId));
     handleDialogClose();
   };
 
-  const handleDelete = () => {
-    // delete selectedEntry
+  const handleDelete = async () => {
+    await dispatch(deleteFile(selectedEntry));
+    await dispatch(getStorageData(parentId));
     handleDialogClose();
   };
 
@@ -99,12 +101,7 @@ const FileList: React.FC = () => {
               </ListItemAvatar>
               <ListItemText classes={{ primary: 'c-FileList__itemName' }} primary={name} />
               <ListItemSecondaryAction>
-                <IconButton
-                  color="primary"
-                  edge="end"
-                  aria-label="edit"
-                  onClick={() => handleDialogOpen('rename', index)}
-                >
+                <IconButton color="primary" edge="end" aria-label="edit" onClick={() => handleDialogOpen('rename', id)}>
                   <EditIcon />
                 </IconButton>
 
@@ -112,7 +109,7 @@ const FileList: React.FC = () => {
                   color="secondary"
                   edge="end"
                   aria-label="delete"
-                  onClick={() => handleDialogOpen('delete', index)}
+                  onClick={() => handleDialogOpen('delete', id)}
                 >
                   <DeleteIcon />
                 </IconButton>

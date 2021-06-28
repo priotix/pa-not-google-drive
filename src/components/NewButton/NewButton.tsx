@@ -35,7 +35,13 @@ const NewButton: React.FC = () => {
   };
 
   const onCreateFolder = async () => {
-    await dispatch(createFolder(folderName, parentId));
+    interface Request {
+      name: string;
+      parent?: string;
+    }
+    const requestData: Request = { name: folderName };
+    parentId ? (requestData.parent = parentId) : '';
+    await dispatch(createFolder(requestData));
     await dispatch(getStorageData(parentId));
     handleCloseModal();
   };

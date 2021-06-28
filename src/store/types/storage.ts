@@ -62,6 +62,34 @@ interface SetParentId {
   id: string | null;
 }
 
+interface DeleteFile {
+  type: typeof types.DELETE_FILE;
+}
+
+interface DeleteFileSuccess {
+  type: typeof types.DELETE_FILE_SUCCESS;
+  payload: any;
+}
+
+interface DeleteFileFailure {
+  type: typeof types.DELETE_FILE_FAILURE;
+  error: any;
+}
+
+interface RenameFile {
+  type: typeof types.RENAME_FILE;
+}
+
+interface RenameFileSuccess {
+  type: typeof types.RENAME_FILE_SUCCESS;
+  payload: any;
+}
+
+interface RenameFileFailure {
+  type: typeof types.RENAME_FILE_FAILURE;
+  error: any;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
@@ -72,4 +100,10 @@ export type StorageActions =
   | UploudFile
   | UploudFileSuccess
   | UploudFileFailure
-  | SetParentId;
+  | SetParentId
+  | DeleteFile
+  | DeleteFileSuccess
+  | DeleteFileFailure
+  | RenameFile
+  | RenameFileSuccess
+  | RenameFileFailure;

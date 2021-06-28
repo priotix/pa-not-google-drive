@@ -32,20 +32,16 @@ export const getStorageData = (parentId?: string): ThunkAction<void, RootState, 
   };
 };
 
-export const createFolder = (name: string, parentId?: string): ThunkAction<void, RootState, null, StorageActions> => {
+export const createFolder = (requestData): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.CREATE_FOLDER });
     try {
       const url = `${configUrl}/items`;
-      const data = await axios.post(
-        url,
-        { name, parent: parentId },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const data = await axios.post(url, requestData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       dispatch({ type: types.CREATE_FOLDER_SUCCESS, payload: data.data });
       return data;
@@ -85,6 +81,52 @@ export const uploudFile = (
     } catch (err) {
       toast.error(err.response ? err.response.data.message : err.toString());
       dispatch({ type: types.UPLOUD_FILE_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
+    }
+  };
+};
+
+export const deleteFile = (id: string): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.DELETE_FILE });
+    try {
+      const url = `${configUrl}/items/${id}`;
+      const data = await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      dispatch({ type: types.DELETE_FILE_SUCCESS, payload: data.data });
+      return data;
+    } catch (err) {
+      toast.error(err.response ? err.response.data.message : err.toString());
+      dispatch({ type: types.DELETE_FILE_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
+    }
+  };
+};
+
+export const renameFile = (id: string, name: string): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.RENAME_FILE });
+    try {
+      const url = `${configUrl}/items/${id}`;
+      const data = await axios.put(
+        url,
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      dispatch({ type: types.RENAME_FILE_SUCCESS, payload: data.data });
+      return data;
+    } catch (err) {
+      toast.error(err.response ? err.response.data.message : err.toString());
+      dispatch({ type: types.RENAME_FILE_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
   };
