@@ -24,7 +24,7 @@ const SidebarContent: React.FC = () => {
         {navigationItems.map((item) => {
           const { title, href, Icon } = item;
           return (
-            <ListItem key={href} button component={NavLink} activeClassName="c-Sidebar__navItem--active" to={href}>
+            <ListItem key={href} button component={NavLink} to={href} activeClassName="c-Sidebar__navItem--active">
               <ListItemIcon className="c-Sidebar__navItem__icon">
                 <Icon />
               </ListItemIcon>

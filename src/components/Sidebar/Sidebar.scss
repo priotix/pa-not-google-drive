@@ -2,7 +2,6 @@
 
 .c-Sidebar {
   .c-Sidebar__drawer {
-    // border-right: 0px;
     z-index: 1099;
     overflow: unset;
   }
@@ -24,13 +23,13 @@
     svg {
       color: inherit;
     }
-  }
 
-  .c-Sidebar__navItem__icon {
-    color: inherit;
-  }
+    .c-Sidebar__navItem__text {
+      font-weight: inherit;
+    }
 
-  .c-Sidebar__navItem__text {
-    font-weight: inherit;
+    .c-Sidebar__navItem__icon {
+      color: inherit;
+    }
   }
 }
