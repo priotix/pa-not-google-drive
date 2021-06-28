@@ -1,7 +1,7 @@
-@import '../../scss/mixins.scss';
+@import 'src/scss/mixins.scss';
 
 .c-StorageIndicator {
-  padding: 10px 24px;
+  padding: 10px 16px;
   .c-StorageIndicator__cloudBlock {
     display: flex;
     align-items: center;

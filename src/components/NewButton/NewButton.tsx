@@ -67,10 +67,10 @@ const NewButton: React.FC = () => {
           horizontal: 'left',
         }}
         PaperProps={{
-          style: { width: '250px' },
+          style: { width: '220px' },
         }}
       >
-        <div className="c-NewButton__popoverItems" onClick={handleOpenModal} role="button" onKeyPress={handleOpenModal}>
+        <div className="c-NewButton__popoverItem" onClick={handleOpenModal} role="button" onKeyPress={handleOpenModal}>
           <CreateNewFolder /> Folder
         </div>
         <Dialog open={openModal} onClose={handleCloseModal} aria-labelledby="form-dialog-title">
@@ -96,7 +96,7 @@ const NewButton: React.FC = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        <div className="c-NewButton__popoverItems">
+        <div className="c-NewButton__popoverItem">
           <input id="contained-button-file" type="file" />
           <label htmlFor="contained-button-file">
             <Attachment /> File upload

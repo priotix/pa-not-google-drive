@@ -23,7 +23,6 @@ import {
   Folder as FolderIcon,
   Delete as DeleteIcon,
   InsertDriveFile as FileIcon,
-  GetApp as DownloadIcon,
   Edit as EditIcon,
 } from '@material-ui/icons';
 
@@ -156,9 +155,7 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
             <ListItem
               key={index}
               classes={{ secondaryAction: isFile ? 'c-FileList__listItem--largePadding' : 'c-FileList__listItem' }}
-              // TODO: remove when material-ui error is fixed in the next release
-              // @ts-expect-error: Type 'boolean' is not assignable to type 'true'
-              button={type === 'folder'}
+              button
               ContainerComponent="div"
               ContainerProps={{ style }}
               component={type === 'folder' ? Link : 'div'}
@@ -171,11 +168,6 @@ const FileList: React.FC<FileListProps> = ({ data = sampleData }) => {
               </ListItemAvatar>
               <ListItemText classes={{ primary: 'c-FileList__itemName' }} primary={name} />
               <ListItemSecondaryAction>
-                {isFile && (
-                  <IconButton edge="end" aria-label="download">
-                    <DownloadIcon />
-                  </IconButton>
-                )}
                 <IconButton
                   color="primary"
                   edge="end"
