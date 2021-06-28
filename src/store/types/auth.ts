@@ -5,6 +5,7 @@ export interface AuthState {
   isAuthenticated: boolean;
   loginPending: boolean;
   logoutPending: boolean;
+  userCreated: boolean;
   error: string;
 }
 

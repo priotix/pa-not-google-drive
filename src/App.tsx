@@ -1,6 +1,6 @@
 /* eslint-disable react/no-children-prop */
-import React, { Suspense } from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import React, { Suspense, useEffect } from 'react';
+import { Switch, Route, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from './store/selectors/auth';
 
@@ -12,7 +12,12 @@ const FileList = React.lazy(() => import('./components/FileList'));
 
 const App: React.FC = () => {
   const location = useLocation();
-  const { isAuthenticated } = useSelector(selectIsAuthenticated);
+  const history = useHistory();
+  const { isAuthenticated, userCreated } = useSelector(selectIsAuthenticated);
+
+  useEffect(() => {
+    history.push('/login');
+  }, [userCreated]);
 
   return isAuthenticated ? (
     <Suspense fallback={<div>Loading...</div>}>
