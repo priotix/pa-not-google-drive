@@ -135,7 +135,7 @@ const FileList: React.FC = () => {
           <Button onClick={handleDialogClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleRename} color="primary">
+          <Button onClick={handleRename} color="primary" disabled={!newName}>
             OK
           </Button>
         </DialogActions>
