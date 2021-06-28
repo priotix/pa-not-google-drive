@@ -86,9 +86,7 @@ const FileList: React.FC = () => {
             <ListItem
               key={index}
               classes={{ secondaryAction: isFile ? 'c-FileList__listItem--largePadding' : 'c-FileList__listItem' }}
-              // TODO: remove when material-ui error is fixed in the next release
-              // @ts-expect-error: Type 'boolean' is not assignable to type 'true'
-              button={type === 'folder'}
+              button
               ContainerComponent="div"
               ContainerProps={{ style }}
               component={type === 'dir' ? Link : 'div'}

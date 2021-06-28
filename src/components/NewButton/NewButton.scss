@@ -1,4 +1,4 @@
-@import '../../scss/mixins.scss';
+@import 'src/scss/mixins.scss';
 
 .c-NewButton {
   display: flex;
@@ -14,17 +14,24 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  @include fontMixin(16px, "Roboto", 400, unset, unset, #757575);
+  @include fontMixin(16px, 'Roboto', 400, unset, unset, #757575);
   cursor: pointer;
+
+  svg {
+    margin-right: 10px;
+  }
+
   input {
     display: none;
   }
+
   label {
     display: flex;
     align-items: center;
     cursor: pointer;
   }
+
   &:hover {
-    background: #e8f0fe;
+    background: rgba(0, 0, 0, 0.04);
   }
 }

@@ -77,7 +77,7 @@ const NewButton: React.FC = () => {
           horizontal: 'left',
         }}
         PaperProps={{
-          style: { width: '250px' },
+          style: { width: '220px' },
         }}
       >
         <div className="c-NewButton__popoverItems" onClick={handleOpenModal} role="button" onKeyPress={handleOpenModal}>

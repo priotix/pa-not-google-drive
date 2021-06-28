@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ListAlt } from '@material-ui/icons';
 
-import { Hidden, Drawer, Toolbar } from '@material-ui/core';
+import { Hidden, Drawer, Toolbar, List, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core';
 
 import StorageIndicator from '../StorageIndicator';
 import NewButton from '../NewButton';
@@ -14,21 +14,26 @@ interface SidebarProps {
   onClose?: (e: React.SyntheticEvent) => void;
 }
 
+const navigationItems = [{ title: 'My Drive', href: '/storage', Icon: ListAlt }];
+
 const SidebarContent: React.FC = () => {
   return (
     <div className="c-Sidebar__content">
       <NewButton />
-      <nav className="c-Sidebar__navigation">
-        <ul>
-          <li>
-            <NavLink to="/storage">
-              <ListAlt />
-              My Drive
-            </NavLink>
-          </li>
-        </ul>
-      </nav>
-      <hr />
+      <List>
+        {navigationItems.map((item) => {
+          const { title, href, Icon } = item;
+          return (
+            <ListItem key={href} button component={NavLink} to={href} activeClassName="c-Sidebar__navItem--active">
+              <ListItemIcon className="c-Sidebar__navItem__icon">
+                <Icon />
+              </ListItemIcon>
+              <ListItemText classes={{ primary: 'c-Sidebar__navItem__text' }} primary={title} />
+            </ListItem>
+          );
+        })}
+      </List>
+      <Divider />
       <StorageIndicator />
     </div>
   );
