@@ -22,7 +22,7 @@
 
 .c-FileList--empty {
   display: flex;
-  height: 100vh;
+  height: calc(100vh - 64px);
   align-items: center;
   justify-content: center;
   .c-FileList__emptyContnet {
