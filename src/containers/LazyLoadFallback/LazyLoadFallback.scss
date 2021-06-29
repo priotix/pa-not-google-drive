@@ -1,0 +1,13 @@
+.c-Lazyload {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.c-Lazyload__progressContainer {
+  display: flex;
+  align-items: center;
+
+  flex: 1;
+}

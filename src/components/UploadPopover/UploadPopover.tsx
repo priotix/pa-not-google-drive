@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,11 +21,22 @@ import { selectParentId, selectUploudLoader } from '../../store/selectors/storag
 import './UploadPopover.scss';
 
 const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose, ...otherProps }) => {
+  const history = useHistory();
+  const searchQuery = new URLSearchParams(useLocation().search).get('search');
+
   const [openModal, setOpenModal] = useState(false);
   const [folderName, setFolderName] = useState('');
   const parentId = useSelector(selectParentId);
   const uploudPending = useSelector(selectUploudLoader);
   const dispatch = useDispatch();
+
+  const getFiles = () => {
+    if (searchQuery) {
+      history.push('/storage');
+    } else {
+      dispatch(getStorageData(parentId));
+    }
+  };
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -47,13 +59,13 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
     const requestData: Request = { name: folderName };
     parentId ? (requestData.parent = parentId) : '';
     await dispatch(createFolder(requestData));
-    await dispatch(getStorageData(parentId));
+    getFiles();
     handleCloseModal();
   };
 
   const multipleAplload = (request) => {
     Promise.allSettled(request).then(() => {
-      dispatch(getStorageData(parentId));
+      getFiles();
       dispatch({ type: 'SET_UPLOADLOADER', loader: false });
     });
   };

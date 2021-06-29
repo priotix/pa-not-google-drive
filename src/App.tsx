@@ -1,12 +1,14 @@
 import React, { Suspense, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAuthData } from './store/selectors/auth';
 
+import { selectAuthData } from './store/selectors/auth';
 import { getParentId } from './libs/getParentId';
 
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+
+import LazyLoadFallback from './containers/LazyLoadFallback';
 
 const Layout = React.lazy(() => import('./containers/Layout'));
 const Storage = React.lazy(() => import('./containers/Storage'));
@@ -22,7 +24,7 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   return isAuthenticated ? (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LazyLoadFallback />}>
       <Layout>
         <Switch>
           <Route path="/storage" children={(props) => props.match && <Storage />} />
