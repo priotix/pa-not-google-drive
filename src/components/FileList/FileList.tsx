@@ -29,7 +29,8 @@ import {
 } from '@material-ui/core';
 
 import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
-import { selectStorageData } from '../../store/selectors/storage';
+import { selectStorageData, selectGetStorageDataPending } from '../../store/selectors/storage';
+
 import formatSize from '../../libs/formatSize';
 
 import { getParentId } from '../../libs/getParentId';
@@ -49,6 +50,7 @@ const FileList: React.FC = () => {
 
   const dispatch = useDispatch();
   const storageData = useSelector(selectStorageData);
+  const getDataPending = useSelector(selectGetStorageDataPending);
 
   const { pathname, search } = useLocation();
   const searchQuery = new URLSearchParams(search).get('search');
@@ -100,7 +102,7 @@ const FileList: React.FC = () => {
     getFiles();
   }, [searchQuery, parentId]);
 
-  if (!storageData.length) {
+  if (!storageData.length && !getDataPending) {
     return (
       <div className="c-FileList--empty">
         <div className="c-FileList__emptyContnet">
