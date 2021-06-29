@@ -16,7 +16,7 @@ export interface StorageState {
   parentId: null | string;
   free: number;
   total: number;
-  uploudPending: boolean;
+  uploudLoader: boolean;
 }
 
 interface GetStorageDataPending {
@@ -64,6 +64,11 @@ interface UploadFileFailure {
 interface SetParentId {
   type: typeof types.SET_PARENTID;
   id: string | null;
+}
+
+interface SetUploadLoader {
+  type: typeof types.SET_UPLOADLOADER;
+  loader: boolean;
 }
 
 interface DeleteFile {
@@ -132,6 +137,7 @@ export type StorageActions =
   | UploadFileSuccess
   | UploadFileFailure
   | SetParentId
+  | SetUploadLoader
   | DeleteFile
   | DeleteFileSuccess
   | DeleteFileFailure
