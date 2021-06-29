@@ -15,16 +15,16 @@ import {
 } from '@material-ui/core';
 import { CreateNewFolder, InsertDriveFile } from '@material-ui/icons';
 import { createFolder, uploadFile, getStorageData } from '../../store/actions/storage';
-import { selectParentId, selectUploudPending } from '../../store/selectors/storage';
+import { selectParentId, selectUploudLoader } from '../../store/selectors/storage';
 
 import './UploadPopover.scss';
 
 const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose, ...otherProps }) => {
+  const [openModal, setOpenModal] = useState(false);
   const [folderName, setFolderName] = useState('');
   const parentId = useSelector(selectParentId);
+  const uploudPending = useSelector(selectUploudLoader);
   const dispatch = useDispatch();
-  const [openModal, setOpenModal] = useState(false);
-  const uploudPending = useSelector(selectUploudPending);
 
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -51,15 +51,25 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
     handleCloseModal();
   };
 
+  const multipleAplload = (request) => {
+    Promise.allSettled(request).then(() => {
+      dispatch(getStorageData(parentId));
+      dispatch({ type: 'SET_UPLOADLOADER', loader: false });
+    });
+  };
+
   const onUploadFile = async (e) => {
-    const file = e.target.files[0];
-    const { size, name } = file;
-    await dispatch(uploadFile(name, size, file, parentId));
-    await dispatch(getStorageData(parentId));
+    const { files } = e.target;
+    dispatch({ type: 'SET_UPLOADLOADER', loader: true });
+    const request = [...files].map((file) => {
+      const { size, name } = file;
+      return dispatch(uploadFile(name, size, file, parentId));
+    });
+    multipleAplload(request);
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'upload-popover' : undefined;
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <>
@@ -92,7 +102,7 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
           </DialogActions>
         </Dialog>
         <div className="c-UploadPopover__item">
-          <input id="contained-button-file" type="file" onChange={onUploadFile} />
+          <input id="contained-button-file" type="file" multiple onChange={onUploadFile} />
           {/*  eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
           <label htmlFor="contained-button-file">
             <InsertDriveFile /> File upload

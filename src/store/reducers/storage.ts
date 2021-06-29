@@ -10,7 +10,7 @@ const initialState = {
   parentId: null,
   free: null,
   total: null,
-  uploudPending: false,
+  uploudLoader: false,
 };
 
 export const reducer = (state = initialState, action: StorageActions): StorageState => {
@@ -40,15 +40,8 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
     case types.SET_PARENTID:
       return { ...state, parentId: action.id };
 
-    case types.UPLOUD_FILE:
-      return { ...state, uploudPending: true };
-    case types.UPLOUD_FILE_SUCCESS:
-      return {
-        ...state,
-        uploudPending: false,
-      };
-    case types.UPLOUD_FILE_FAILURE:
-      return { ...state, uploudPending: false };
+    case types.SET_UPLOADLOADER:
+      return { ...state, uploudLoader: action.loader };
 
     case types.GET_USER_INFO_SUCCESS:
       return {

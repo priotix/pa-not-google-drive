@@ -5,4 +5,4 @@ export const selectStorageData = (state: RootState): StorageDataItem[] => state.
 export const selectParentId = (state: RootState): string | null => state.storage.parentId;
 export const selectFreePlace = (state: RootState): number | null => state.storage.free;
 export const selectTotalPlace = (state: RootState): number | null => state.storage.total;
-export const selectUploudPending = (state: RootState): boolean => state.storage.uploudPending;
+export const selectUploudLoader = (state: RootState): boolean => state.storage.uploudLoader;
