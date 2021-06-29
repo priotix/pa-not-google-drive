@@ -128,7 +128,7 @@ const FileList: React.FC = () => {
               ContainerComponent="div"
               ContainerProps={{ style }}
               component={type === 'dir' ? Link : 'div'}
-              to={`${pathname}/${searchQuery ? `${parentIds.reverse().join('/')}/` : ''}${id}`}
+              to={`${pathname}/${searchQuery && parentIds.length ? `${parentIds.reverse().join('/')}/` : ''}${id}`}
             >
               <ListItemAvatar>
                 <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
