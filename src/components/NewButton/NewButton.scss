@@ -35,3 +35,23 @@
     background: rgba(0, 0, 0, 0.04);
   }
 }
+
+.c-NewButton__modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .c-NewButton__modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      @include fontMixin(16px, 'Roboto', 400, unset, unset, #3f51b5);
+      margin-top: 15px;
+    }
+  }
+  div {
+    &:focus {
+      outline: none;
+    }
+  }
+}

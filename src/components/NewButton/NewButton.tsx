@@ -1,10 +1,20 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Popover, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
+import {
+  Button,
+  Popover,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Modal,
+  CircularProgress,
+} from '@material-ui/core';
 import { Add, CreateNewFolder, Attachment } from '@material-ui/icons';
 import { createFolder, uploadFile, getStorageData } from '../../store/actions/storage';
-import { selectParentId } from '../../store/selectors/storage';
+import { selectParentId, selectUploudPending } from '../../store/selectors/storage';
 
 import './NewButton.scss';
 
@@ -16,6 +26,7 @@ const NewButton: React.FC = () => {
   };
   const [folderName, setFolderName] = useState('');
   const parentId = useSelector(selectParentId);
+  const uploudPending = useSelector(selectUploudPending);
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -121,6 +132,12 @@ const NewButton: React.FC = () => {
           </label>
         </div>
       </Popover>
+      <Modal open={uploudPending} className="c-NewButton__modal">
+        <div className="c-NewButton__modalContent">
+          <CircularProgress />
+          <p>File is uplouding...</p>
+        </div>
+      </Modal>
     </div>
   );
 };

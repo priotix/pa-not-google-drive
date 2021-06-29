@@ -14,6 +14,9 @@ export interface StorageState {
   getDataPending: boolean;
   error: string;
   parentId: null | string;
+  free: number;
+  total: number;
+  uploudPending: boolean;
 }
 
 interface GetStorageDataPending {
@@ -105,6 +108,19 @@ interface SearchFilesFailure {
   error: any;
 }
 
+interface GetUserInfoPending {
+  type: typeof types.GET_USER_INFO_PENDING;
+}
+
+interface GetUserInfoSuccess {
+  type: typeof types.GET_USER_INFO_SUCCESS;
+  payload: any;
+}
+interface GetUserInfoFailure {
+  type: typeof types.GET_USER_INFO_FAILURE;
+  error: any;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
@@ -124,4 +140,7 @@ export type StorageActions =
   | RenameFileFailure
   | SearchFilesPending
   | SearchFilesSuccess
-  | SearchFilesFailure;
+  | SearchFilesFailure
+  | GetUserInfoPending
+  | GetUserInfoSuccess
+  | GetUserInfoFailure;

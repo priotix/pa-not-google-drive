@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import { Cloud } from '@material-ui/icons';
+import { selectFreePlace, selectTotalPlace } from '../../store/selectors/storage';
 
 import './StorageIndicator.scss';
 
 const StorageIndicator: React.FC = () => {
-  const [usedSpace, setUsedSpace] = useState(1000);
-  const maxPlace = 10000;
+  const free = useSelector(selectFreePlace);
+  const total = useSelector(selectTotalPlace);
 
-  const changeProgressPercentage = (used) => {
-    const progressPercentage = (used * 100) / maxPlace;
+  const changeProgressPercentage = () => {
+    const progressPercentage = ((total - free) * 100) / total;
     const slider = document.getElementById(`indicator`);
     if (!slider) {
       return;
@@ -20,8 +23,8 @@ const StorageIndicator: React.FC = () => {
   };
 
   useEffect(() => {
-    changeProgressPercentage(usedSpace);
-  }, [usedSpace]);
+    changeProgressPercentage();
+  }, [free]);
 
   return (
     <div className="c-StorageIndicator">
@@ -29,7 +32,7 @@ const StorageIndicator: React.FC = () => {
         <Cloud /> Storage
       </div>
       <div className="c-StorageIndicator__indicator" id="indicator" />
-      <div className="c-StorageIndicator__label">{`${usedSpace} MB of ${maxPlace} MB used`}</div>
+      {free && <div className="c-StorageIndicator__label">{`${total - free} MB of ${total} MB used`}</div>}
     </div>
   );
 };

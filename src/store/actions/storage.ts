@@ -8,6 +8,23 @@ import request from '../../services/authenticatedRequest';
 
 const configUrl = config.globals.urlStorageHost;
 
+export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.GET_USER_INFO_PENDING });
+    try {
+      const url = `${configUrl}/users/info`;
+      const data = await request.get(url);
+
+      dispatch({ type: types.GET_USER_INFO_SUCCESS, payload: data.data });
+      return data;
+    } catch (err) {
+      toast.error(err.response ? err.response.data.message : err.toString());
+      dispatch({ type: types.GET_USER_INFO_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
+    }
+  };
+};
+
 export const getStorageData = (parentId?: string): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.GET_STORAGE_DATA });
@@ -16,6 +33,7 @@ export const getStorageData = (parentId?: string): ThunkAction<void, RootState, 
       const data = await request.get(url, { params: { parent: parentId } });
 
       dispatch({ type: types.GET_STORAGE_DATA_SUCCESS, payload: data.data });
+      dispatch(getUserInfo());
       return data;
     } catch (err) {
       toast.error(err.response ? err.response.data.message : err.toString());
@@ -62,6 +80,7 @@ export const uploadFile = (
       });
 
       dispatch({ type: types.UPLOUD_FILE_SUCCESS, payload: data.data });
+      toast.success('File uploaded successfully.');
       return data;
     } catch (err) {
       toast.error(err.response ? err.response.data.message : err.toString());

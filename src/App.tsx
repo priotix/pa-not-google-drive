@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import React, { Suspense, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,8 +17,8 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getParentId(location.pathname);
-    dispatch({ type: 'SET_PARENTID', id: getParentId(location.pathname) });
+    const parentId = getParentId(location.pathname);
+    dispatch({ type: 'SET_PARENTID', id: parentId });
   }, [location.pathname]);
 
   return isAuthenticated ? (
