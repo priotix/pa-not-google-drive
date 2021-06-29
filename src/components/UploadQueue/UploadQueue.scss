@@ -1,0 +1,45 @@
+.c-UploadQueue {
+  width: 300px;
+  height: auto;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  background: #e8f0fe;
+  border-radius: 5px;
+  .c-UploadQueue__header{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #3f51b5;
+    height: 40px;
+    padding: 0px 10px;
+    color: #ffffff;
+    svg {
+      cursor: pointer;
+    }
+  }
+  .c-UploadQueue__wrapper {
+    padding: 10px;
+    color: #3f51b5;
+    .c-UploadQueue__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      .c-UploadQueue__fileName {
+        display: flex;
+        align-items: center;
+      }
+      .success {
+        color: green;
+      }
+      .rejected {
+        color: red;
+      }
+      .pending {
+        width: 15px !important;
+        height: 15px !important;
+      }
+    }
+  }
+}

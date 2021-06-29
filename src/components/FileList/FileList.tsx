@@ -31,6 +31,7 @@ import {
 import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
 import { selectStorageData, selectGetStorageDataPending } from '../../store/selectors/storage';
 
+import UploadQueue from '../UploadQueue';
 import formatSize from '../../libs/formatSize';
 
 import { getParentId } from '../../libs/getParentId';
@@ -102,19 +103,16 @@ const FileList: React.FC = () => {
     getFiles();
   }, [searchQuery, parentId]);
 
-  if (!storageData.length && !getDataPending) {
-    return (
-      <div className="c-FileList--empty">
-        <div className="c-FileList__emptyContnet">
-          <CloudIcon />
-          <p>This folder is empty. Please use &quot;New&quot; button for uploading files.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="c-FileList">
+      {!storageData.length && !getDataPending && (
+        <div className="c-FileList--empty">
+          <div className="c-FileList__emptyContnet">
+            <CloudIcon />
+            <p>This folder is empty. Please use &quot;New&quot; button for uploading files.</p>
+          </div>
+        </div>
+      )}
       <FixedSizeList height={listHeight} width="100%" itemSize={72} itemCount={storageData.length}>
         {({ index, style }) => {
           const { name, id, type, size, updatedAt, parentIds } = storageData[index];
@@ -205,6 +203,7 @@ const FileList: React.FC = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <UploadQueue />
     </div>
   );
 };

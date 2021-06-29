@@ -10,7 +10,7 @@ const initialState = {
   parentId: null,
   free: null,
   total: null,
-  uploudLoader: false,
+  uploudQueue: [],
 };
 
 export const reducer = (state = initialState, action: StorageActions): StorageState => {
@@ -40,8 +40,31 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
     case types.SET_PARENTID:
       return { ...state, parentId: action.id };
 
-    case types.SET_UPLOADLOADER:
-      return { ...state, uploudLoader: action.loader };
+    case types.UPLOUD_FILE:
+      return { ...state, uploudQueue: [...state.uploudQueue, ...action.payload] };
+    case types.UPLOUD_FILE_SUCCESS:
+      return {
+        ...state,
+        uploudQueue: state.uploudQueue.map((item) => {
+          if (item.name === action.payload) {
+            return { ...item, status: 'success' };
+          }
+          return { ...item };
+        }),
+      };
+    case types.UPLOUD_FILE_FAILURE:
+      return {
+        ...state,
+        uploudQueue: state.uploudQueue.map((item) => {
+          if (item.name === action.payload) {
+            return { ...item, status: 'rejected' };
+          }
+          return { ...item };
+        }),
+      };
+
+    case types.RESTORE_UPLOUD_QUEUE:
+      return { ...state, uploudQueue: [] };
 
     case types.GET_USER_INFO_SUCCESS:
       return {

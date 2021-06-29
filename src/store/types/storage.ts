@@ -18,7 +18,11 @@ export interface StorageState {
   parentId: null | string;
   free: number;
   total: number;
-  uploudLoader: boolean;
+  uploudQueue: {
+    name: string;
+    size: string;
+    status: string;
+  }[];
 }
 
 interface GetStorageDataPending {
@@ -51,26 +55,31 @@ interface CreateFolderFailure {
 
 interface UploadFile {
   type: typeof types.UPLOUD_FILE;
+  payload: {
+    name: string;
+    size: string;
+    status: string;
+  }[];
 }
 
 interface UploadFileSuccess {
   type: typeof types.UPLOUD_FILE_SUCCESS;
-  payload: any;
+  payload: string;
 }
 
 interface UploadFileFailure {
   type: typeof types.UPLOUD_FILE_FAILURE;
-  error: any;
+  payload: string;
+}
+
+interface RestoreUploudQueue {
+  type: typeof types.RESTORE_UPLOUD_QUEUE;
+  id: string | null;
 }
 
 interface SetParentId {
   type: typeof types.SET_PARENTID;
   id: string | null;
-}
-
-interface SetUploadLoader {
-  type: typeof types.SET_UPLOADLOADER;
-  loader: boolean;
 }
 
 interface DeleteFile {
@@ -139,7 +148,6 @@ export type StorageActions =
   | UploadFileSuccess
   | UploadFileFailure
   | SetParentId
-  | SetUploadLoader
   | DeleteFile
   | DeleteFileSuccess
   | DeleteFileFailure
@@ -151,4 +159,5 @@ export type StorageActions =
   | SearchFilesFailure
   | GetUserInfoPending
   | GetUserInfoSuccess
-  | GetUserInfoFailure;
+  | GetUserInfoFailure
+  | RestoreUploudQueue;

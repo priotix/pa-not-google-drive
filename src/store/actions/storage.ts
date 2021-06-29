@@ -67,7 +67,7 @@ export const uploadFile = (
   parentId?: string
 ): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
-    dispatch({ type: types.UPLOUD_FILE });
+    dispatch({ type: types.UPLOUD_FILE, payload: [{ name, size, status: 'pending' }] });
     try {
       const parent = parentId ? `&parent=${parentId}` : '';
       const url = `${configUrl}/items/upload?name=${name}&size=${size}${parent}`;
@@ -78,13 +78,12 @@ export const uploadFile = (
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      dispatch({ type: types.UPLOUD_FILE_SUCCESS, payload: data.data });
+      dispatch({ type: types.UPLOUD_FILE_SUCCESS, payload: data.data.name });
       toast.success('File uploaded successfully.');
       return data;
     } catch (err) {
       toast.error(err.response ? err.response.data.message : err.toString());
-      dispatch({ type: types.UPLOUD_FILE_FAILURE, error: err.response && err.response.data });
+      dispatch({ type: types.UPLOUD_FILE_FAILURE, payload: name });
       return err.response && err.response.data;
     }
   };

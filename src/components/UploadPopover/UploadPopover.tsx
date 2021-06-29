@@ -9,13 +9,11 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Modal,
-  CircularProgress,
   PopoverProps,
 } from '@material-ui/core';
 import { CreateNewFolder, InsertDriveFile } from '@material-ui/icons';
 import { createFolder, uploadFile, getStorageData } from '../../store/actions/storage';
-import { selectParentId, selectUploudLoader } from '../../store/selectors/storage';
+import { selectParentId } from '../../store/selectors/storage';
 
 import './UploadPopover.scss';
 
@@ -23,7 +21,6 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
   const [openModal, setOpenModal] = useState(false);
   const [folderName, setFolderName] = useState('');
   const parentId = useSelector(selectParentId);
-  const uploudPending = useSelector(selectUploudLoader);
   const dispatch = useDispatch();
 
   const handleOpenModal = () => {
@@ -54,13 +51,11 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
   const multipleAplload = (request) => {
     Promise.allSettled(request).then(() => {
       dispatch(getStorageData(parentId));
-      dispatch({ type: 'SET_UPLOADLOADER', loader: false });
     });
   };
 
   const onUploadFile = async (e) => {
     const { files } = e.target;
-    dispatch({ type: 'SET_UPLOADLOADER', loader: true });
     const request = [...files].map((file) => {
       const { size, name } = file;
       return dispatch(uploadFile(name, size, file, parentId));
@@ -109,12 +104,6 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
           </label>
         </div>
       </Popover>
-      <Modal open={uploudPending} className="c-UploadPopover__modal">
-        <div className="c-UploadPopover__modalContent">
-          <CircularProgress />
-          <p>File is uplouding...</p>
-        </div>
-      </Modal>
     </>
   );
 };
