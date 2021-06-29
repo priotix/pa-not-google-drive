@@ -53,8 +53,8 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
     case types.GET_USER_INFO_SUCCESS:
       return {
         ...state,
-        free: +(action.payload.free / 1048576).toFixed(),
-        total: +(action.payload.total / 1048576).toFixed(),
+        free: action.payload.free / 1048576,
+        total: action.payload.total / 1048576,
       };
     default:
       return state;

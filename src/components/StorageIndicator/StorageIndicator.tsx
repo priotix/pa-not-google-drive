@@ -32,7 +32,7 @@ const StorageIndicator: React.FC = () => {
         <Cloud /> Storage
       </div>
       <div className="c-StorageIndicator__indicator" id="indicator" />
-      {free && <div className="c-StorageIndicator__label">{`${total - free} MB of ${total} MB used`}</div>}
+      {free && <div className="c-StorageIndicator__label">{`${(total - free).toFixed(2)} MB of ${total} MB used`}</div>}
     </div>
   );
 };
