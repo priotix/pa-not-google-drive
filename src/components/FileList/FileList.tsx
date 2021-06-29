@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Cloud,
+  Folder as FolderIcon,
+  Delete as DeleteIcon,
+  InsertDriveFile as FileIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
 import {
   TextField,
@@ -18,13 +25,6 @@ import {
   DialogContentText,
   DialogActions,
 } from '@material-ui/core';
-
-import {
-  Folder as FolderIcon,
-  Delete as DeleteIcon,
-  InsertDriveFile as FileIcon,
-  Edit as EditIcon,
-} from '@material-ui/icons';
 
 import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
 import { selectStorageData } from '../../store/selectors/storage';
@@ -90,6 +90,17 @@ const FileList: React.FC = () => {
   useEffect(() => {
     getFiles();
   }, [searchQuery, parentId]);
+
+  if (!storageData.length) {
+    return (
+      <div className="c-FileList--empty">
+        <div className="c-FileList__emptyContnet">
+          <Cloud />
+          <p>This folder is empty. Please use &quot;New&quot; button for uploading files.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="c-FileList">
