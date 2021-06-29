@@ -8,8 +8,8 @@ import { getParentId } from './libs/getParentId';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 
-const Layout = React.lazy(() => import('./components/Layout'));
-const FileList = React.lazy(() => import('./components/FileList'));
+const Layout = React.lazy(() => import('./containers/Layout'));
+const Storage = React.lazy(() => import('./containers/Storage'));
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const App: React.FC = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Layout>
         <Switch>
-          <Route path="/storage" children={(props) => props.match && <FileList />} />
+          <Route path="/storage" children={(props) => props.match && <Storage />} />
           <Redirect push to={{ pathname: '/storage', state: { from: location.pathname } }} />
         </Switch>
       </Layout>

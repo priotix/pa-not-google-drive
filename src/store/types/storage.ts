@@ -5,6 +5,8 @@ export interface StorageDataItem {
   name: string;
   type: string;
   parentIds: string[];
+  updatedAt: string;
+  size: number;
 }
 
 export interface StorageState {

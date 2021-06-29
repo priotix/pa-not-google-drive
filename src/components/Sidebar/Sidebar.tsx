@@ -16,7 +16,7 @@ interface SidebarProps {
 
 const navigationItems = [{ title: 'My Drive', href: '/storage', Icon: ListAlt }];
 
-const SidebarContent: React.FC = () => {
+const SidebarContent: React.FC<Omit<SidebarProps, 'open'>> = ({ onClose }) => {
   return (
     <div className="c-Sidebar__content">
       <NewButton />
@@ -24,7 +24,14 @@ const SidebarContent: React.FC = () => {
         {navigationItems.map((item) => {
           const { title, href, Icon } = item;
           return (
-            <ListItem key={href} button component={NavLink} to={href} activeClassName="c-Sidebar__navItem--active">
+            <ListItem
+              onClick={onClose}
+              key={href}
+              button
+              component={NavLink}
+              to={href}
+              activeClassName="c-Sidebar__navItem--active"
+            >
               <ListItemIcon className="c-Sidebar__navItem__icon">
                 <Icon />
               </ListItemIcon>
@@ -44,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
     <>
       <Hidden smUp>
         <Drawer anchor="left" open={open} onClose={onClose}>
-          <SidebarContent />
+          <SidebarContent onClose={onClose} />
         </Drawer>
       </Hidden>
 

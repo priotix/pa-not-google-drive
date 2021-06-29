@@ -86,6 +86,7 @@
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "config": "^3.3.6",
+    "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
     "fs-extra": "^10.0.0",
     "jwt-decode": "^3.1.2",

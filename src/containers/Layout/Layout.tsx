@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 
 import './Layout.scss';
-import Header from '../Header';
-import Sidebar from '../Sidebar';
+import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
 
 const Layout = memo(({ children }) => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);

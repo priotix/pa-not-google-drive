@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 import { useDispatch, useSelector } from 'react-redux';
+import { format, differenceInDays, formatDistanceStrict } from 'date-fns';
 
 import {
   TextField,
@@ -28,9 +29,16 @@ import {
 
 import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
 import { selectStorageData } from '../../store/selectors/storage';
+import formatSize from '../../libs/formatSize';
 
 import { getParentId } from '../../libs/getParentId';
 import './FileList.scss';
+
+const formatDate = (lastModified: Date) => {
+  return differenceInDays(Date.now(), lastModified) >= 1
+    ? format(lastModified, 'MMM dd, yyyy hh:mm')
+    : formatDistanceStrict(lastModified, Date.now(), { addSuffix: true }).replace('0 seconds ago', 'Just now');
+};
 
 const FileList: React.FC = () => {
   const [listHeight, setListHeight] = useState(0);
@@ -93,14 +101,17 @@ const FileList: React.FC = () => {
 
   return (
     <div className="c-FileList">
-      <FixedSizeList height={listHeight} width="100%" itemSize={56} itemCount={storageData.length}>
+      <FixedSizeList height={listHeight} width="100%" itemSize={72} itemCount={storageData.length}>
         {({ index, style }) => {
-          const { name, id, type, parentIds } = storageData[index];
+          const { name, id, type, size, updatedAt, parentIds } = storageData[index];
           const isFile = type === 'file';
+
+          const formattedDate = formatDate(new Date(updatedAt));
+
           return (
             <ListItem
               key={index}
-              classes={{ secondaryAction: isFile ? 'c-FileList__listItem--largePadding' : 'c-FileList__listItem' }}
+              classes={{ secondaryAction: 'c-FileList__listItem' }}
               button
               ContainerComponent="div"
               ContainerProps={{ style }}
@@ -112,7 +123,11 @@ const FileList: React.FC = () => {
                   {isFile ? <FileIcon /> : <FolderIcon />}
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText classes={{ primary: 'c-FileList__itemName' }} primary={name} />
+              <ListItemText
+                classes={{ primary: 'c-FileList__itemName', secondary: 'c-FileList__itemName' }}
+                primary={name}
+                secondary={`${isFile ? `${formatSize(size)} ●` : ''} ${formattedDate}`}
+              />
               <ListItemSecondaryAction>
                 <IconButton color="primary" edge="end" aria-label="edit" onClick={() => handleDialogOpen('rename', id)}>
                   <EditIcon />
