@@ -111,8 +111,8 @@ const FileList: React.FC = () => {
       return;
     }
 
-    dispatch(getStorageData({ parentId, skip: queryParams.skip + 15, limit: queryParams.limit + 15 }));
-    dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit + 15));
+    dispatch(getStorageData({ parentId, skip: queryParams.skip + 15, limit: queryParams.limit }));
+    dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit));
   };
 
   useEffect(() => {
