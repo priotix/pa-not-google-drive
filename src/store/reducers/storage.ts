@@ -4,6 +4,11 @@ import { StorageState, StorageActions } from '../types/storage';
 const initialState = {
   storageData: {
     documents: [],
+    total: 0,
+  },
+  queryParams: {
+    skip: 0,
+    limit: 15,
   },
   getDataPending: false,
   error: null,
@@ -20,7 +25,10 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
     case types.GET_STORAGE_DATA_SUCCESS:
       return {
         ...state,
-        storageData: action.payload,
+        storageData: {
+          documents: [...state.storageData.documents, ...action.payload.documents],
+          total: action.payload.total,
+        },
         getDataPending: false,
       };
     case types.GET_STORAGE_DATA_FAILURE:
@@ -39,6 +47,9 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
 
     case types.SET_PARENTID:
       return { ...state, parentId: action.id };
+
+    case types.SET_QUERY_PARAMS:
+      return { ...state, queryParams: action.payload };
 
     case types.UPLOUD_FILE:
       return {
@@ -68,6 +79,15 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
 
     case types.RESTORE_UPLOUD_QUEUE:
       return { ...state, uploudQueue: [] };
+
+    case types.RESTORE_STORAGE_DATA:
+      return {
+        ...state,
+        storageData: {
+          documents: [],
+          total: 0,
+        },
+      };
 
     case types.GET_USER_INFO_SUCCESS:
       return {

@@ -39,12 +39,16 @@ export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions
   };
 };
 
-export const getStorageData = (parentId?: string): ThunkAction<void, RootState, null, StorageActions> => {
+export const getStorageData = (
+  parentId?: string,
+  skip?: number,
+  limit?: number
+): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.GET_STORAGE_DATA });
     try {
       const url = `${configUrl}/items`;
-      const data = await request.get(url, { params: { parent: parentId } });
+      const data = await request.get(url, { params: { parent: parentId, skip, limit, sort: '-updatedAt' } });
 
       dispatch({ type: types.GET_STORAGE_DATA_SUCCESS, payload: data.data });
       dispatch(getUserInfo());
@@ -151,5 +155,11 @@ export const searchFiles = (query: string): ThunkAction<void, RootState, null, S
       dispatch({ type: types.SEARCH_FILES_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
+  };
+};
+
+export const setQueryParams = (skip: number, limit: number): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.SET_QUERY_PARAMS, payload: { skip, limit } });
   };
 };

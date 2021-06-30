@@ -2,6 +2,9 @@ import { RootState } from '../reducers/index';
 import { StorageDataItem } from '../types/storage';
 
 export const selectStorageData = (state: RootState): StorageDataItem[] => state.storage.storageData.documents;
+export const selectStorageTotal = (state: RootState): number => state.storage.storageData.total;
+export const selectStorageQueryParams = (state: RootState): { limit: number; skip: number } =>
+  state.storage.queryParams;
 export const selectUploudQueue = (state: RootState): { name: string; size: number; status: string }[] =>
   state.storage.uploudQueue;
 export const selectGetStorageDataPending = (state: RootState): boolean => state.storage.getDataPending;

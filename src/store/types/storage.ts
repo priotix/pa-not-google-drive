@@ -12,12 +12,17 @@ export interface StorageDataItem {
 export interface StorageState {
   storageData: {
     documents: StorageDataItem[];
+    total: number;
   };
   getDataPending: boolean;
   error: string;
   parentId: null | string;
   free: number;
   total: number;
+  queryParams: {
+    skip: number;
+    limit: number;
+  };
   uploudQueue: {
     name: string;
     size: string;
@@ -77,9 +82,21 @@ interface RestoreUploudQueue {
   id: string | null;
 }
 
+interface RestoreStorageData {
+  type: typeof types.RESTORE_STORAGE_DATA;
+}
+
 interface SetParentId {
   type: typeof types.SET_PARENTID;
   id: string | null;
+}
+
+interface SetQueryParams {
+  type: typeof types.SET_QUERY_PARAMS;
+  payload: {
+    skip: number;
+    limit: number;
+  };
 }
 
 interface DeleteFile {
@@ -160,4 +177,6 @@ export type StorageActions =
   | GetUserInfoPending
   | GetUserInfoSuccess
   | GetUserInfoFailure
-  | RestoreUploudQueue;
+  | RestoreUploudQueue
+  | SetQueryParams
+  | RestoreStorageData;

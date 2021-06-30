@@ -13,7 +13,7 @@ import {
   PopoverProps,
 } from '@material-ui/core';
 import { CreateNewFolder, InsertDriveFile } from '@material-ui/icons';
-import { createFolder, uploadFile, getStorageData } from '../../store/actions/storage';
+import { createFolder, uploadFile, getStorageData, setQueryParams } from '../../store/actions/storage';
 import { selectParentId } from '../../store/selectors/storage';
 
 import './UploadPopover.scss';
@@ -31,7 +31,9 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
     if (searchQuery) {
       history.push('/storage');
     } else {
-      dispatch(getStorageData(parentId));
+      dispatch({ type: 'RESTORE_STORAGE_DATA' });
+      dispatch(setQueryParams(0, 15));
+      dispatch(getStorageData(parentId, 0, 15));
     }
   };
 

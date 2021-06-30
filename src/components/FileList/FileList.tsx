@@ -28,8 +28,13 @@ import {
   DialogActions,
 } from '@material-ui/core';
 
-import { getStorageData, deleteFile, renameFile, searchFiles } from '../../store/actions/storage';
-import { selectStorageData, selectGetStorageDataPending } from '../../store/selectors/storage';
+import { getStorageData, deleteFile, renameFile, searchFiles, setQueryParams } from '../../store/actions/storage';
+import {
+  selectStorageData,
+  selectGetStorageDataPending,
+  selectStorageTotal,
+  selectStorageQueryParams,
+} from '../../store/selectors/storage';
 
 import UploadQueue from '../UploadQueue';
 import formatSize from '../../libs/formatSize';
@@ -52,6 +57,8 @@ const FileList: React.FC = () => {
   const dispatch = useDispatch();
   const storageData = useSelector(selectStorageData);
   const getDataPending = useSelector(selectGetStorageDataPending);
+  const total = useSelector(selectStorageTotal);
+  const queryParams = useSelector(selectStorageQueryParams);
 
   const { pathname, search } = useLocation();
   const searchQuery = new URLSearchParams(search).get('search');
@@ -61,7 +68,9 @@ const FileList: React.FC = () => {
     if (searchQuery) {
       dispatch(searchFiles(searchQuery));
     } else {
-      dispatch(getStorageData(parentId));
+      dispatch(setQueryParams(0, 15));
+      dispatch({ type: 'RESTORE_STORAGE_DATA' });
+      dispatch(getStorageData(parentId, 0, 15));
     }
   };
 
@@ -93,6 +102,15 @@ const FileList: React.FC = () => {
     setListHeight(mainContainerHeight);
   };
 
+  const onScroll = (scroll) => {
+    if ((listHeight + scroll.scrollOffset) / 72 !== storageData.length || total === storageData.length) {
+      return;
+    }
+
+    dispatch(getStorageData(parentId, queryParams.skip + 15, queryParams.limit + 15));
+    dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit + 15));
+  };
+
   useEffect(() => {
     updateListHeight();
     window.addEventListener('resize', updateListHeight);
@@ -113,7 +131,13 @@ const FileList: React.FC = () => {
           </div>
         </div>
       )}
-      <FixedSizeList height={listHeight} width="100%" itemSize={72} itemCount={storageData.length}>
+      <FixedSizeList
+        height={!storageData.length ? 0 : listHeight}
+        width="100%"
+        itemSize={72}
+        itemCount={storageData.length}
+        onScroll={onScroll}
+      >
         {({ index, style }) => {
           const { name, id, type, size, updatedAt, parentIds } = storageData[index];
           const isFile = type === 'file';
