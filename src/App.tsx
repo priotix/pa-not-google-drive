@@ -3,6 +3,7 @@ import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectAuthData } from './store/selectors/auth';
+import { setQueryParams } from './store/actions/storage';
 import { getParentId } from './libs/getParentId';
 
 import Login from './components/Login';
@@ -21,6 +22,10 @@ const App: React.FC = () => {
   useEffect(() => {
     const parentId = getParentId(location.pathname);
     dispatch({ type: 'SET_PARENTID', id: parentId });
+    if (location.pathname === '/login') {
+      dispatch(setQueryParams(0, 15));
+      dispatch({ type: 'RESTORE_STORAGE_DATA' });
+    }
   }, [location.pathname]);
 
   return isAuthenticated ? (

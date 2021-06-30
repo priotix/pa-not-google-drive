@@ -69,11 +69,11 @@ const FileList: React.FC = () => {
   const parentId = getParentId(pathname);
 
   const getFiles = () => {
+    dispatch(setQueryParams(0, 15));
+    dispatch({ type: 'RESTORE_STORAGE_DATA' });
     if (searchQuery) {
       dispatch(getStorageData({ searchQuery }));
     } else {
-      dispatch(setQueryParams(0, 15));
-      dispatch({ type: 'RESTORE_STORAGE_DATA' });
       dispatch(getStorageData({ parentId, skip: 0, limit: 15 }));
     }
   };
@@ -111,8 +111,8 @@ const FileList: React.FC = () => {
       return;
     }
 
-    dispatch(getStorageData({ parentId, skip: queryParams.skip + 15, limit: queryParams.limit + 15 }));
-    dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit + 15));
+    dispatch(getStorageData({ parentId, skip: queryParams.skip + 15, limit: queryParams.limit }));
+    dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit));
   };
 
   useEffect(() => {
