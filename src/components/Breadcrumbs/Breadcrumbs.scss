@@ -1,5 +1,34 @@
 @import 'src/scss/mixins.scss';
 
+.c-BreadcrumbsContainer {
+  display: flex;
+  align-items: center;
+
+  height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.c-BreadcrumbsContainer__backButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 60px;
+  margin-right: 8px;
+
+  @include screen(599px) {
+    width: 40px;
+    margin-right: 15px;
+  }
+}
+
 .c-Breadcrumbs {
-  padding: 20px;
+  width: calc(100vw - 80px);
+}
+
+.c-Breadcrumbs__ol {
+  white-space: nowrap;
+  overflow: auto;
+  flex-wrap: nowrap;
 }
