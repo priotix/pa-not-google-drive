@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { loadState } from '../libs/localStorage';
 
-const { accessToken } = loadState().auth.authData;
+const accessToken = loadState()?.auth.authData.accessToken;
 
 const authenticatedRequest = () => {
   const defaultHeaders = {
