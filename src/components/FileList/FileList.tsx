@@ -69,11 +69,11 @@ const FileList: React.FC = () => {
   const parentId = getParentId(pathname);
 
   const getFiles = () => {
+    dispatch(setQueryParams(0, 15));
+    dispatch({ type: 'RESTORE_STORAGE_DATA' });
     if (searchQuery) {
       dispatch(getStorageData({ searchQuery }));
     } else {
-      dispatch(setQueryParams(0, 15));
-      dispatch({ type: 'RESTORE_STORAGE_DATA' });
       dispatch(getStorageData({ parentId, skip: 0, limit: 15 }));
     }
   };
