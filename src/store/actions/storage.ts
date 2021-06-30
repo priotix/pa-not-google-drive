@@ -19,6 +19,7 @@ const handleErrMessages = (err) => {
   if (err.data && err.data.errors && err.data.errors[0].slug) {
     return errorMessages[err.data.errors[0].slug] || 'Something went wrong';
   }
+  return 'Something went wrong';
 };
 
 export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions> => {
