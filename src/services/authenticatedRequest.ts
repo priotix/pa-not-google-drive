@@ -1,15 +1,17 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { loadState } from '../libs/localStorage';
 
-const accessToken = loadState()?.auth.authData.accessToken;
-
 const authenticatedRequest = () => {
-  const defaultHeaders = {
-    Authorization: `Bearer ${accessToken}`,
-  };
-
   const extendHeaders = (options: AxiosRequestConfig = {}) => {
-    return { ...options, headers: { ...(options.headers || {}), ...defaultHeaders } };
+    return {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        ...{
+          Authorization: `Bearer ${loadState()?.auth.authData.accessToken}`,
+        },
+      },
+    };
   };
 
   return {
