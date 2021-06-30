@@ -9,9 +9,9 @@ import request from '../../services/authenticatedRequest';
 const configUrl = config.globals.urlStorageHost;
 
 const errorMessages = {
-  'item-data-is-invalid': 'File is already exist.',
-  'item-parent-not-found': 'Folder is not exist.',
-  'item-not-found': 'File is not exist.',
+  'item-data-is-invalid': 'File already exists.',
+  'item-parent-not-found': 'Folder does not exist.',
+  'item-not-found': 'File does not exist.',
   'item-parent-is-invalid': 'Wrong parentId.',
 };
 
