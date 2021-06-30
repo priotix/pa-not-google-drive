@@ -33,7 +33,7 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
     } else {
       dispatch({ type: 'RESTORE_STORAGE_DATA' });
       dispatch(setQueryParams(0, 15));
-      dispatch(getStorageData(parentId, 0, 15));
+      dispatch(getStorageData({ parentId, skip: 0, limit: 15 }));
     }
   };
 

@@ -7,6 +7,7 @@ export interface StorageDataItem {
   parentIds: string[];
   updatedAt: string;
   size: number;
+  path?: string;
 }
 
 export interface StorageState {
@@ -28,6 +29,9 @@ export interface StorageState {
     size: string;
     status: string;
   }[];
+  itemInfo: StorageDataItem;
+  itemInfoLoading: boolean;
+  itemInfoError: string;
 }
 
 interface GetStorageDataPending {
@@ -127,17 +131,17 @@ interface RenameFileFailure {
   error: any;
 }
 
-interface SearchFilesPending {
-  type: typeof types.SEARCH_FILES;
+interface GetItemInfo {
+  type: typeof types.GET_ITEM_INFO;
 }
 
-interface SearchFilesSuccess {
-  type: typeof types.SEARCH_FILES_SUCCESS;
+interface GetItemInfoSuccess {
+  type: typeof types.GET_ITEM_INFO_SUCCESS;
   payload: any;
 }
 
-interface SearchFilesFailure {
-  type: typeof types.SEARCH_FILES_FAILURE;
+interface GetItemInfoFailure {
+  type: typeof types.GET_ITEM_INFO_FAILURE;
   error: any;
 }
 
@@ -171,9 +175,9 @@ export type StorageActions =
   | RenameFile
   | RenameFileSuccess
   | RenameFileFailure
-  | SearchFilesPending
-  | SearchFilesSuccess
-  | SearchFilesFailure
+  | GetItemInfo
+  | GetItemInfoSuccess
+  | GetItemInfoFailure
   | GetUserInfoPending
   | GetUserInfoSuccess
   | GetUserInfoFailure

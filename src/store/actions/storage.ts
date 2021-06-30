@@ -39,16 +39,24 @@ export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions
   };
 };
 
-export const getStorageData = (
-  parentId?: string,
-  skip?: number,
-  limit?: number
-): ThunkAction<void, RootState, null, StorageActions> => {
+export const getStorageData = ({
+  parentId,
+  searchQuery,
+  skip,
+  limit,
+}: {
+  parentId?: string;
+  searchQuery?: string;
+  skip?: number;
+  limit?: number;
+}): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.GET_STORAGE_DATA });
     try {
       const url = `${configUrl}/items`;
-      const data = await request.get(url, { params: { parent: parentId, skip, limit, sort: '-updatedAt' } });
+      const data = await request.get(url, {
+        params: { parent: parentId, skip, limit, sort: '-updatedAt', query: searchQuery || undefined },
+      });
 
       dispatch({ type: types.GET_STORAGE_DATA_SUCCESS, payload: data.data });
       dispatch(getUserInfo());
@@ -141,18 +149,23 @@ export const renameFile = (id: string, name: string): ThunkAction<void, RootStat
   };
 };
 
-export const searchFiles = (query: string): ThunkAction<void, RootState, null, StorageActions> => {
+export const getItemInfo = (id: string): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
-    dispatch({ type: types.SEARCH_FILES });
+    dispatch({ type: types.GET_ITEM_INFO });
     try {
-      const url = `${configUrl}/items/search`;
-      const data = await request.get(url, { params: { query: query || undefined } });
+      let data;
+      if (!id) {
+        data = { data: { path: '/storage' } };
+      } else {
+        const url = `${configUrl}/items/${id}`;
+        data = await request.get(url);
+      }
 
-      dispatch({ type: types.SEARCH_FILES_SUCCESS, payload: data.data });
+      dispatch({ type: types.GET_ITEM_INFO_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
       toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
-      dispatch({ type: types.SEARCH_FILES_FAILURE, error: err.response && err.response.data });
+      dispatch({ type: types.GET_ITEM_INFO_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FixedSizeList } from 'react-window';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,10 +28,13 @@ import {
   DialogActions,
 } from '@material-ui/core';
 
-import { getStorageData, deleteFile, renameFile, searchFiles, setQueryParams } from '../../store/actions/storage';
+import Breadcrumbs from '../Breadcrumbs';
+
+import { getStorageData, deleteFile, renameFile, getItemInfo, setQueryParams } from '../../store/actions/storage';
 import {
   selectStorageData,
   selectGetStorageDataPending,
+  selectItemInfo,
   selectStorageTotal,
   selectStorageQueryParams,
 } from '../../store/selectors/storage';
@@ -59,6 +62,7 @@ const FileList: React.FC = () => {
   const getDataPending = useSelector(selectGetStorageDataPending);
   const total = useSelector(selectStorageTotal);
   const queryParams = useSelector(selectStorageQueryParams);
+  const { name, path, parentIds = [] } = useSelector(selectItemInfo) || {};
 
   const { pathname, search } = useLocation();
   const searchQuery = new URLSearchParams(search).get('search');
@@ -66,11 +70,11 @@ const FileList: React.FC = () => {
 
   const getFiles = () => {
     if (searchQuery) {
-      dispatch(searchFiles(searchQuery));
+      dispatch(getStorageData({ searchQuery }));
     } else {
       dispatch(setQueryParams(0, 15));
       dispatch({ type: 'RESTORE_STORAGE_DATA' });
-      dispatch(getStorageData(parentId, 0, 15));
+      dispatch(getStorageData({ parentId, skip: 0, limit: 15 }));
     }
   };
 
@@ -107,7 +111,7 @@ const FileList: React.FC = () => {
       return;
     }
 
-    dispatch(getStorageData(parentId, queryParams.skip + 15, queryParams.limit + 15));
+    dispatch(getStorageData({ parentId, skip: queryParams.skip + 15, limit: queryParams.limit + 15 }));
     dispatch(setQueryParams(queryParams.skip + 15, queryParams.limit + 15));
   };
 
@@ -118,16 +122,49 @@ const FileList: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    dispatch(getItemInfo(parentId));
+  }, [parentId]);
+
+  useEffect(() => {
     getFiles();
   }, [searchQuery, parentId]);
 
+  const breadcrumbItems = useMemo(() => {
+    const items = [{ title: 'My Drive', to: '/storage' }];
+    if (path === items[0].to) {
+      return items;
+    }
+
+    if (searchQuery) {
+      items.push({ title: 'Search', to: null });
+      return items;
+    }
+
+    if (path) {
+      const folderNames = path.split('/');
+      items.push(
+        ...parentIds.map((id, index) => ({
+          title: folderNames[index],
+          to: `/storage/${parentIds.slice(0, index + 1).join('/')}`,
+        }))
+      );
+    }
+
+    items.push({ title: name, to: null });
+
+    return items;
+  }, [searchQuery, name, path]);
+
   return (
     <div className="c-FileList">
+      <Breadcrumbs items={breadcrumbItems} />
       {!storageData.length && !getDataPending && (
         <div className="c-FileList--empty">
           <div className="c-FileList__emptyContnet">
             <CloudIcon />
-            <p>This folder is empty. Please use &quot;New&quot; button for uploading files.</p>
+            <p>
+              This folder is empty. <br /> Upload files to see them here.
+            </p>
           </div>
         </div>
       )}
@@ -139,7 +176,7 @@ const FileList: React.FC = () => {
         onScroll={onScroll}
       >
         {({ index, style }) => {
-          const { name, id, type, size, updatedAt, parentIds } = storageData[index];
+          const { name: childName, id, type, size, updatedAt, parentIds: childParentIds } = storageData[index];
           const isFile = type === 'file';
 
           const formattedDate = formatDate(new Date(updatedAt));
@@ -152,7 +189,9 @@ const FileList: React.FC = () => {
               ContainerComponent="div"
               ContainerProps={{ style }}
               component={type === 'dir' ? Link : 'div'}
-              to={`${pathname}/${searchQuery && parentIds.length ? `${parentIds.reverse().join('/')}/` : ''}${id}`}
+              to={`${pathname}/${
+                searchQuery && childParentIds.length ? `${childParentIds.reverse().join('/')}/` : ''
+              }${id}`}
             >
               <ListItemAvatar>
                 <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
@@ -161,7 +200,7 @@ const FileList: React.FC = () => {
               </ListItemAvatar>
               <ListItemText
                 classes={{ primary: 'c-FileList__itemName', secondary: 'c-FileList__itemName' }}
-                primary={name}
+                primary={childName}
                 secondary={`${isFile ? `${formatSize(size)} ●` : ''} ${formattedDate}`}
               />
               <ListItemSecondaryAction>

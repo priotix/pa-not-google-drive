@@ -4,7 +4,7 @@
   .c-Layout__main {
     margin-top: 64px;
     margin-left: 250px;
-    height: calc(100vh - 64px);
+    height: calc(100vh - 128px);
 
     @include screen(599px) {
       margin-left: 0;
