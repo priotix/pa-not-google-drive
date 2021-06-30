@@ -73,6 +73,7 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
       return dispatch(uploadFile(name, size, file, parentId));
     });
     multipleAplload(request);
+    e.target.value = '';
   };
 
   const open = Boolean(anchorEl);

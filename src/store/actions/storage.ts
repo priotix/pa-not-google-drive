@@ -8,6 +8,20 @@ import request from '../../services/authenticatedRequest';
 
 const configUrl = config.globals.urlStorageHost;
 
+const errorMessages = {
+  'item-data-is-invalid': 'File already exists.',
+  'item-parent-not-found': 'Folder does not exist.',
+  'item-not-found': 'File does not exist.',
+  'item-parent-is-invalid': 'Wrong parentId.',
+};
+
+const handleErrMessages = (err) => {
+  if (err.data && err.data.errors && err.data.errors[0].slug) {
+    return errorMessages[err.data.errors[0].slug] || 'Something went wrong';
+  }
+  return 'Something went wrong';
+};
+
 export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.GET_USER_INFO_PENDING });
@@ -18,7 +32,7 @@ export const getUserInfo = (): ThunkAction<void, RootState, null, StorageActions
       dispatch({ type: types.GET_USER_INFO_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.GET_USER_INFO_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
@@ -44,7 +58,7 @@ export const getStorageData = ({
       dispatch(getUserInfo());
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.GET_STORAGE_DATA_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
@@ -61,7 +75,7 @@ export const createFolder = (requestData): ThunkAction<void, RootState, null, St
       dispatch({ type: types.CREATE_FOLDER_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.CREATE_FOLDER_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
@@ -90,7 +104,7 @@ export const uploadFile = (
       toast.success('File uploaded successfully.');
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.UPLOUD_FILE_FAILURE, payload: name });
       return err.response && err.response.data;
     }
@@ -107,7 +121,7 @@ export const deleteFile = (id: string): ThunkAction<void, RootState, null, Stora
       dispatch({ type: types.DELETE_FILE_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.DELETE_FILE_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
@@ -124,7 +138,7 @@ export const renameFile = (id: string, name: string): ThunkAction<void, RootStat
       dispatch({ type: types.RENAME_FILE_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.RENAME_FILE_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
@@ -146,7 +160,7 @@ export const getItemInfo = (id: string): ThunkAction<void, RootState, null, Stor
       dispatch({ type: types.GET_ITEM_INFO_SUCCESS, payload: data.data });
       return data;
     } catch (err) {
-      toast.error(err.response ? err.response.data.message : err.toString());
+      toast.error(err.response ? handleErrMessages(err.response) : 'Something went wrong');
       dispatch({ type: types.GET_ITEM_INFO_FAILURE, error: err.response && err.response.data });
       return err.response && err.response.data;
     }
