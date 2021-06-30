@@ -31,7 +31,7 @@ const UploadPopover: React.FC<Omit<PopoverProps, 'open'>> = ({ anchorEl, onClose
     if (searchQuery) {
       history.push('/storage');
     } else {
-      dispatch(getStorageData(parentId));
+      dispatch(getStorageData({ parentId }));
     }
   };
 

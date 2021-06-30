@@ -11,6 +11,9 @@ const initialState = {
   free: null,
   total: null,
   uploudQueue: [],
+  itemInfo: null,
+  itemInfoLoading: false,
+  itemInfoError: null,
 };
 
 export const reducer = (state = initialState, action: StorageActions): StorageState => {
@@ -26,16 +29,16 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
     case types.GET_STORAGE_DATA_FAILURE:
       return { ...state, error: action.error, getDataPending: false };
 
-    case types.SEARCH_FILES:
-      return { ...state, getDataPending: true };
-    case types.SEARCH_FILES_SUCCESS:
+    case types.GET_ITEM_INFO:
+      return { ...state, itemInfoLoading: true };
+    case types.GET_ITEM_INFO_SUCCESS:
       return {
         ...state,
-        storageData: action.payload,
-        getDataPending: false,
+        itemInfo: action.payload,
+        itemInfoLoading: false,
       };
-    case types.SEARCH_FILES_FAILURE:
-      return { ...state, error: action.error, getDataPending: false };
+    case types.GET_ITEM_INFO_FAILURE:
+      return { ...state, itemInfoError: action.error, itemInfoLoading: false };
 
     case types.SET_PARENTID:
       return { ...state, parentId: action.id };
