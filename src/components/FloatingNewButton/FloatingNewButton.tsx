@@ -10,7 +10,7 @@ const FloatingNewButton = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   return (
-    <>
+    <div className="c-FloatingNewButtonContainer">
       <Fab
         color="primary"
         aria-label="add"
@@ -34,7 +34,7 @@ const FloatingNewButton = () => {
           style: { width: '220px' },
         }}
       />
-    </>
+    </div>
   );
 };
 

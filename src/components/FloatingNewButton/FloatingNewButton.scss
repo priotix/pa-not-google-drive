@@ -1,12 +1,14 @@
 @import 'src/scss/mixins.scss';
 
-.c-FloatingNewButton {
-  display: none;
+.c-FloatingNewButtonContainer {
+  .c-FloatingNewButton {
+    display: none;
 
-  @include screen(599px) {
-    display: flex;
-    right: 20px;
-    bottom: 20px;
-    position: fixed;
+    @include screen(599px) {
+      display: flex;
+      right: 20px;
+      bottom: 20px;
+      position: fixed;
+    }
   }
 }
