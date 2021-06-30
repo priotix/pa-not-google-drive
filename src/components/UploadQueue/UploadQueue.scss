@@ -1,3 +1,5 @@
+@import 'src/scss/mixins.scss';
+
 .c-UploadQueue {
   width: 300px;
   height: auto;
@@ -41,5 +43,9 @@
         height: 15px !important;
       }
     }
+  }
+  @include screen(599px) {
+    width: 260px;
+    left: 15px;
   }
 }
