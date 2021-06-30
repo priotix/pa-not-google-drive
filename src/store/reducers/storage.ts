@@ -41,13 +41,16 @@ export const reducer = (state = initialState, action: StorageActions): StorageSt
       return { ...state, parentId: action.id };
 
     case types.UPLOUD_FILE:
-      return { ...state, uploudQueue: [...state.uploudQueue, ...action.payload] };
+      return {
+        ...state,
+        uploudQueue: [...new Map([...state.uploudQueue, ...action.payload].map((item) => [item.name, item])).values()],
+      };
     case types.UPLOUD_FILE_SUCCESS:
       return {
         ...state,
         uploudQueue: state.uploudQueue.map((item) => {
           if (item.name === action.payload) {
-            return { ...item, status: 'success' };
+            return { ...item, status: 'success', name: `${item.name}  ` };
           }
           return { ...item };
         }),
