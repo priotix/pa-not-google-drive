@@ -164,9 +164,15 @@ const FileList: React.FC = () => {
         <div className="c-FileList--empty">
           <div className="c-FileList__emptyContnet">
             <CloudIcon />
-            <p>
-              This folder is empty. <br /> Upload files to see them here.
-            </p>
+            {searchQuery ? (
+              <p>
+                Your search gave no results. <br /> Try another search query.
+              </p>
+            ) : (
+              <p>
+                This folder is empty. <br /> Upload files to see them here.
+              </p>
+            )}
           </div>
         </div>
       )}
