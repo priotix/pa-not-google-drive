@@ -131,21 +131,23 @@ const FileList: React.FC = () => {
 
   const breadcrumbItems = useMemo(() => {
     const items = [{ title: 'My Drive', to: '/storage' }];
-    if (path === items[0].to) {
-      return items;
-    }
 
     if (searchQuery) {
       items.push({ title: 'Search', to: null });
       return items;
     }
 
+    if (path === items[0].to) {
+      return items;
+    }
+
     if (path) {
       const folderNames = path.split('/');
+      const reversedParentIds = parentIds.reverse();
       items.push(
-        ...parentIds.map((id, index) => ({
+        ...reversedParentIds.map((id, index) => ({
           title: folderNames[index],
-          to: `/storage/${parentIds.slice(0, index + 1).join('/')}`,
+          to: `/storage/${reversedParentIds.slice(0, index + 1).join('/')}`,
         }))
       );
     }

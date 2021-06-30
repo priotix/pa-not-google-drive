@@ -18,9 +18,10 @@
 
 .c-FileList--empty {
   display: flex;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 120px);
   align-items: center;
   justify-content: center;
+
   .c-FileList__emptyContnet {
     display: flex;
     flex-direction: column;
