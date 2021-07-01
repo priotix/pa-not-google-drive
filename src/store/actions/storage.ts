@@ -1,3 +1,4 @@
+import FileSaver from 'file-saver';
 import { toast } from 'react-toastify';
 import { ThunkAction } from 'redux-thunk';
 import config from '../../config/default.json';
@@ -5,6 +6,7 @@ import * as types from '../actionTypes/storage';
 import { StorageActions } from '../types/storage';
 import { RootState } from '../reducers/index';
 import request from '../../services/authenticatedRequest';
+import fileReader from '../../libs/fileReader';
 
 const configUrl = config.globals.urlStorageHost;
 
@@ -157,7 +159,7 @@ export const getItemInfo = (id: string): ThunkAction<void, RootState, null, Stor
       if (!id) {
         data = { data: { path: '/storage' } };
       } else {
-        const url = `${configUrl}/items/${id}`;
+        const url = `${configUrl}/items/${id}/info`;
         data = await request.get(url);
       }
 
@@ -174,5 +176,39 @@ export const getItemInfo = (id: string): ThunkAction<void, RootState, null, Stor
 export const setQueryParams = (skip: number, limit: number): ThunkAction<void, RootState, null, StorageActions> => {
   return async (dispatch) => {
     dispatch({ type: types.SET_QUERY_PARAMS, payload: { skip, limit } });
+  };
+};
+
+export const downloadFile = (id: string): ThunkAction<void, RootState, null, StorageActions> => {
+  return async (dispatch) => {
+    dispatch({ type: types.DOWNLOAD_FILE });
+
+    try {
+      const url = `${configUrl}/items/${id}`;
+      const { data: fileInfo } = await request.get(`${url}/info`);
+      const { data } = await request.get(url, { responseType: 'blob' });
+
+      await FileSaver.saveAs(data, fileInfo.name);
+
+      dispatch({
+        type: types.DOWNLOAD_FILE_SUCCESS,
+      });
+    } catch (err) {
+      if (err.response) {
+        try {
+          const { data } = err.response;
+          const file = await fileReader(data);
+          const { message } = JSON.parse(file as string);
+          toast.error(message);
+        } catch (readError) {
+          toast.error('Something went wrong');
+        }
+      } else {
+        toast.error('Something went wrong');
+      }
+
+      dispatch({ type: types.DOWNLOAD_FILE_FAILURE, error: err.response && err.response.data });
+      return err.response && err.response.data;
+    }
   };
 };

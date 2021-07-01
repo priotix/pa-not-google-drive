@@ -158,6 +158,19 @@ interface GetUserInfoFailure {
   error: any;
 }
 
+interface DownloadFile {
+  type: typeof types.DOWNLOAD_FILE;
+}
+
+interface DownloadFileSuccess {
+  type: typeof types.DOWNLOAD_FILE_SUCCESS;
+}
+
+interface DownloadFileFailutre {
+  type: typeof types.DOWNLOAD_FILE_FAILURE;
+  error: any;
+}
+
 export type StorageActions =
   | GetStorageDataPending
   | GetStorageDataSuccess
@@ -183,4 +196,7 @@ export type StorageActions =
   | GetUserInfoFailure
   | RestoreUploudQueue
   | SetQueryParams
-  | RestoreStorageData;
+  | RestoreStorageData
+  | DownloadFile
+  | DownloadFileSuccess
+  | DownloadFileFailutre;

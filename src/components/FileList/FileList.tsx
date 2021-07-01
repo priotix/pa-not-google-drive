@@ -30,7 +30,14 @@ import {
 
 import Breadcrumbs from '../Breadcrumbs';
 
-import { getStorageData, deleteFile, renameFile, getItemInfo, setQueryParams } from '../../store/actions/storage';
+import {
+  getStorageData,
+  deleteFile,
+  renameFile,
+  getItemInfo,
+  setQueryParams,
+  downloadFile,
+} from '../../store/actions/storage';
 import {
   selectStorageData,
   selectGetStorageDataPending,
@@ -196,10 +203,11 @@ const FileList: React.FC = () => {
               button
               ContainerComponent="div"
               ContainerProps={{ style }}
-              component={type === 'dir' ? Link : 'div'}
+              component={isFile ? 'div' : Link}
               to={`${pathname}/${
                 searchQuery && childParentIds.length ? `${childParentIds.reverse().join('/')}/` : ''
               }${id}`}
+              onClick={() => isFile && dispatch(downloadFile(id))}
             >
               <ListItemAvatar>
                 <Avatar className={!isFile ? 'c-FileList__folderAvatar' : ''}>
